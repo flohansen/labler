@@ -1,0 +1,60 @@
+CREATE TABLE users (
+	id SERIAL,
+	username VARCHAR(50) NOT NULL,
+	password VARCHAR(50) NOT NULL,
+	email VARCHAR(50),
+	PRIMARY KEY (id)
+);
+
+CREATE TABLE categories (
+	id SERIAL,
+	name VARCHAR(50) NOT NULL,
+	PRIMARY KEY (id)
+);
+
+CREATE TABLE image_groups (
+	id SERIAL,
+	name VARCHAR(50) NOT NULL,
+	userId SERIAL NOT NULL,
+	categoryId SERIAL,
+	PRIMARY KEY (id),
+	FOREIGN KEY (userId) REFERENCES users(id)
+		ON DELETE CASCADE,
+	FOREIGN KEY (categoryId) REFERENCES categories(id)
+		ON DELETE SET NULL
+);
+
+CREATE TABLE images (
+	id SERIAL,
+	name VARCHAR(50) NOT NULL,
+	filename VARCHAR(255) NOT NULL,
+	groupId SERIAL NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY (groupId) REFERENCES image_groups(id)
+		ON DELETE CASCADE
+);
+
+CREATE TABLE labels (
+	id SERIAL,
+	name VARCHAR(50) NOT NULL,
+	color VARCHAR(20) NOT NULL,
+	groupId SERIAL NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY (groupId) REFERENCES image_groups(id)
+		ON DELETE CASCADE
+);
+
+CREATE TABLE labelings (
+	id SERIAL,
+	startX INTEGER NOT NULL DEFAULT 0,
+	startY INTEGER NOT NULL DEFAULT 0,
+	endX INTEGER NOT NULL DEFAULT 0,
+	endY INTEGER NOT NULL DEFAULT 0,
+	labelId SERIAL,
+	imageId SERIAL NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY (labelId) REFERENCES labels(id)
+		ON DELETE SET NULL,
+	FOREIGN KEY (imageId) REFERENCES images(id)
+		ON DELETE CASCADE
+);
