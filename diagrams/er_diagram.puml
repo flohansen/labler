@@ -1,0 +1,63 @@
+@startuml
+
+entity User {
+	+id
+	--
+	~username
+	~password
+	~email
+}
+
+entity Image {
+	+id
+	--
+	~name
+	~filename
+	--
+	#groupId
+}
+
+entity ImageGroup {
+	+id
+	--
+	~name
+	--
+	#userId
+	#categoryId
+}
+
+entity Category {
+	+id
+	--
+	~name
+}
+
+entity Label {
+	+id
+	--
+	~name
+	~color
+	--
+	#groupId
+}
+
+entity Labeling {
+	+id
+	--
+	~startX
+	~startY
+	~endX
+	~endY
+	--
+	#labelId
+	#imageId
+}
+
+User --{ ImageGroup
+ImageGroup -left-{ Image
+ImageGroup }-- Category
+ImageGroup --{ Label
+Labeling }-left- Image
+Labeling }-right- Label
+
+@enduml
