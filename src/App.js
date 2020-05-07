@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 
+import CssBaseline from "@material-ui/core/CssBaseline";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -25,6 +26,14 @@ const useStyles = makeStyles(theme => ({
 
 	appTitle: {
 		color: theme.palette.text.primary
+	},
+
+	content: {
+		minHeight: 'calc(100vh - 64px)',
+		background: '#f9f9f9',
+		marginTop: '64px',
+		flexGrow: 1,
+		padding: theme.spacing(3)
 	}
 
 
@@ -35,6 +44,7 @@ function App() {
 
   return (
 		<div className={classes.root}>
+			<CssBaseline />
 			<AppBar className={classes.appBar} elevation={0}>
 				<Toolbar>
 					<IconButton
@@ -48,6 +58,8 @@ function App() {
 					</Typography>
 				</Toolbar>
 			</AppBar>
+			<main className={classes.content}>
+			</main>
 		</div>
   );
 }
