@@ -2,7 +2,6 @@ import React from "react";
 import waves from "../_icons/waves.svg";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
-import SvgIcon from "@material-ui/core/SvgIcon";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
