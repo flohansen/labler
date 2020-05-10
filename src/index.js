@@ -26,6 +26,8 @@ ReactDOM.render(
 				<Route path="/login">
 					<LoginPage />
 				</Route>
+
+				<Redirect from="/" to="login" />
 			</Switch>
 		</Router>
   </React.StrictMode>,
