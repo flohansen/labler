@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import Database from '../_services/Database.js';
 import waves from "../_icons/waves.svg";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -75,6 +76,21 @@ const useStyles = makeStyles(theme => ({
 const LoginPage = () => {
 	const classes = useStyles();
 
+	const [username, setUsername] = useState('');
+	const [password, setPassword] = useState('');
+
+	const handleUsernameChange = event => {
+		setUsername(event.currentTarget.value);
+	};
+
+	const handlePasswordChange = event => {
+		setPassword(event.currentTarget.value);
+	};
+
+	const handleLoginClick = async () => {
+		const response = await Database.auth(username, password);
+	};
+
 	return (
 		<div className={classes.root}>
 			<CssBaseline />
@@ -109,14 +125,16 @@ const LoginPage = () => {
 						label="Username"
 						variant="outlined"
 						size="small"
+						onChange={handleUsernameChange}
 					/>
 					<TextField
 						label="Password"
 						variant="outlined"
 						size="small"
 						type="password"
+						onChange={handlePasswordChange}
 					/>
-					<Button color="primary" variant="contained">Login</Button>
+					<Button color="primary" variant="contained" onClick={handleLoginClick}>Login</Button>
 				</CardContent>
 			</Card>
 		</div>
