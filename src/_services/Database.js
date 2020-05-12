@@ -28,4 +28,15 @@ export default class Database {
 		return await request.json();
 	}
 
+	static async getImageGroups(token) {
+		const request = await fetch('http://localhost:5000/endpoint/groups', {
+			method: 'GET',
+			headers: {
+				'Authorization': `Bearer ${token}`
+			}
+		});
+
+		return await request.json();
+	}
+
 }
