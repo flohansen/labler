@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Database from '../_services/Database';
 import AuthContext from '../_contexts/AuthContext';
 import waves from "../_icons/waves.svg";
@@ -79,6 +79,7 @@ const LoginPage = () => {
 
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
+	const [, setToken] = useContext(AuthContext);
 
 	const handleUsernameChange = event => {
 		setUsername(event.currentTarget.value);
@@ -90,6 +91,10 @@ const LoginPage = () => {
 
 	const handleLoginClick = async () => {
 		const response = await Database.auth(username, password);
+
+		if (response.success) {
+			setToken(response.token);
+		}
 	};
 
 	return (
