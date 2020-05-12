@@ -12,4 +12,20 @@ export default class Database {
 		return await request.json();
 	}
 
+	static async createImageGroup(token, groupName, groupType) {
+		const request = await fetch('http://localhost:5000/endpoint/groups', {
+			method: 'PUT',
+			headers: {
+				'Authorization': `Bearer ${token}`
+			},
+			body: JSON.stringify({
+				groupName: groupName,
+				groupType: groupType
+			})
+		});
+
+
+		return await request.json();
+	}
+
 }
