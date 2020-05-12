@@ -1,6 +1,8 @@
 import React from 'react';
 import './App.css';
 
+import ImageGroup from "./_components/ImageGroup";
+
 import CssBaseline from "@material-ui/core/CssBaseline";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -34,10 +36,37 @@ const useStyles = makeStyles(theme => ({
 		marginTop: '64px',
 		flexGrow: 1,
 		padding: theme.spacing(3)
+	},
+
+	imageGroupContainer: {
+		display: 'flex',
+		justifyContent: 'space-between'
+	},
+
+	imageGroup: {
+		width: '32%'
 	}
 
-
 }));
+
+const imageGroups = [
+	{
+		title: 'Mobile Engineering',
+		subtitle: 'Object Detection',
+		image: 'sea.jpg'
+	},
+	{
+		title: 'Mobile Engineering',
+		subtitle: 'Object Detection',
+		image: 'sea.jpg'
+	},
+	{
+		title: 'Mobile Engineering',
+		subtitle: 'Object Detection',
+		image: 'sea.jpg'
+	}
+
+];
 
 function App() {
 	const classes = useStyles();
@@ -59,6 +88,14 @@ function App() {
 				</Toolbar>
 			</AppBar>
 			<main className={classes.content}>
+				<div className={classes.imageGroupContainer}>
+					{ imageGroups.map(item => (
+						<ImageGroup
+							className={classes.imageGroup}
+							title={item.title}
+							subtitle={item.subtitle} />
+					)) }
+				</div>
 			</main>
 		</div>
   );
