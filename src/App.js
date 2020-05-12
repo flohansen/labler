@@ -1,23 +1,13 @@
-import React, { useState, useContext } from 'react';
+import React from 'react';
 import './App.css';
 
-import AuthContext from "./_contexts/AuthContext";
-import Database from "./_services/Database";
-import ImageGroup from "./_components/ImageGroup";
-import MediaGrid from "./_components/MediaGrid";
-import HeadLine from "./_components/HeadLine";
+import { ImageGroupProvider } from "./_contexts/ImageGroupContext";
+import ImageGroupListPage from "./_components/ImageGroupListPage";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogActions from "@material-ui/core/DialogActions";
-import TextField from "@material-ui/core/TextField";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import { makeStyles } from "@material-ui/core/styles";
@@ -51,75 +41,8 @@ const useStyles = makeStyles(theme => ({
 
 }));
 
-const imageGroups = [
-	{
-		title: 'Mobile Engineering',
-		subtitle: 'Object Detection',
-		image: 'sea.jpg'
-	},
-	{
-		title: 'Mobile Engineering',
-		subtitle: 'Object Detection',
-		image: 'sea.jpg'
-	},
-	{
-		title: 'Mobile Engineering',
-		subtitle: 'Object Detection',
-		image: 'sea.jpg'
-	},
-	{
-		title: 'Mobile Engineering',
-		subtitle: 'Object Detection',
-		image: 'sea.jpg'
-	},
-	{
-		title: 'Mobile Engineering',
-		subtitle: 'Object Detection',
-		image: 'sea.jpg'
-	},
-	{
-		title: 'Mobile Engineering',
-		subtitle: 'Object Detection',
-		image: 'sea.jpg'
-	},
-	{
-		title: 'Mobile Engineering',
-		subtitle: 'Object Detection',
-		image: 'sea.jpg'
-	}
-];
-
 function App() {
 	const classes = useStyles();
-
-	const [token,] = useContext(AuthContext);
-	const [addGroupOpen, setAddGroupOpen] = useState(false);
-	const [newGroupName, setNewGroupName] = useState('');
-	const [newGroupType, setNewGroupType] = useState('');
-
-	const handleAddGroupClick = () => {
-		setAddGroupOpen(true);
-	};
-
-	const handleAddGroupClose = () => {
-		setAddGroupOpen(false);
-	};
-
-	const handleAddGroupCreate = async () => {
-		const response = await Database.createImageGroup(token, newGroupName, newGroupType);
-		
-		if (response.success) {
-			setAddGroupOpen(false);
-		}
-	};
-
-	const handleNewGroupNameChange = event => {
-		setNewGroupName(event.currentTarget.value);
-	};
-
-	const handleNewGroupTypeChange = event => {
-		setNewGroupType(event.currentTarget.value);
-	};
 
   return (
 		<div className={classes.root}>
@@ -137,56 +60,12 @@ function App() {
 					</Typography>
 				</Toolbar>
 			</AppBar>
+
 			<main className={classes.content}>
-
-				<HeadLine title="Image groups">
-					<Button
-						variant="contained"
-						color="primary"
-						onClick={handleAddGroupClick}
-					>
-						New Group
-					</Button>
-				</HeadLine>
-
-				<MediaGrid>
-					{ imageGroups.map(item => (
-						<ImageGroup
-							title={item.title}
-							subtitle={item.subtitle} />
-					)) }
-				</MediaGrid>
+				<ImageGroupProvider>
+					<ImageGroupListPage />
+				</ImageGroupProvider>
 			</main>
-
-			<Dialog open={addGroupOpen} onClose={handleAddGroupClose}>
-				<DialogTitle>Create new image group</DialogTitle>
-				<DialogContent>
-					<DialogContentText>
-						Please fill out the form to create a new image group.
-					</DialogContentText>
-					<TextField
-						onChange={handleNewGroupNameChange}
-						label="Group name"
-						fullWidth
-						margin="dense"
-						autoFocus
-					/>
-					<TextField
-						onChange={handleNewGroupTypeChange}
-						label="Group type"
-						fullWidth
-						margin="dense"
-					/>
-				</DialogContent>
-				<DialogActions>
-					<Button onClick={handleAddGroupClose} color="primary">
-						Cancel
-					</Button>
-					<Button onClick={handleAddGroupCreate} color="primary">
-						Create
-					</Button>
-				</DialogActions>
-			</Dialog>
 		</div>
   );
 }

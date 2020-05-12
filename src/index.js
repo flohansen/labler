@@ -13,7 +13,6 @@ ReactDOM.render(
 		<AuthProvider>
 			<Router>
 				<Switch>
-
 					<PrivateRoute path="/app" component={App} />
 
 					<Route path="/login">
