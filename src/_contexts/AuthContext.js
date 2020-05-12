@@ -1,11 +1,11 @@
-import React, { useEffect, createContext } from "react";
+import React, { useState, useEffect, createContext } from "react";
 
 const AuthContext = createContext();
 
 const useStateLocalStorage = key => {
 
 	const [value, setValue] = useState(
-		localStorage.getItem(key);
+		localStorage.getItem(key)
 	);
 
 	useEffect(() => {
@@ -20,7 +20,7 @@ const AuthProvider = ({ ...props }) => {
 	const [token, setToken] = useStateLocalStorage('auth_id');
 
 	return (
-		<AuthContext.Provider value={token}>
+		<AuthContext.Provider value={[token, setToken]}>
 			{props.children}
 		</AuthContext.Provider>
 	);

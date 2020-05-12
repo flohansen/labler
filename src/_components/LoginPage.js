@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import Database from '../_services/Database.js';
+import Database from '../_services/Database';
+import AuthContext from '../_contexts/AuthContext';
 import waves from "../_icons/waves.svg";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
