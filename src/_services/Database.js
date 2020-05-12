@@ -16,6 +16,7 @@ export default class Database {
 		const request = await fetch('http://localhost:5000/endpoint/groups', {
 			method: 'PUT',
 			headers: {
+				'Content-Type': 'application/json',
 				'Authorization': `Bearer ${token}`
 			},
 			body: JSON.stringify({
@@ -23,7 +24,6 @@ export default class Database {
 				groupType: groupType
 			})
 		});
-
 
 		return await request.json();
 	}
