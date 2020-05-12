@@ -1,4 +1,6 @@
 import React, { useContext, useState } from "react";
+import { useHistory } from "react-router-dom";
+
 import Database from '../_services/Database';
 import AuthContext from '../_contexts/AuthContext';
 import waves from "../_icons/waves.svg";
@@ -76,6 +78,7 @@ const useStyles = makeStyles(theme => ({
 
 const LoginPage = () => {
 	const classes = useStyles();
+	const history = useHistory();
 
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
@@ -94,6 +97,7 @@ const LoginPage = () => {
 
 		if (response.success) {
 			setToken(response.token);
+			history.push('/app');
 		}
 	};
 
