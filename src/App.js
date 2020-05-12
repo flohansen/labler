@@ -40,11 +40,13 @@ const useStyles = makeStyles(theme => ({
 
 	imageGroupContainer: {
 		display: 'flex',
+		flexWrap: 'wrap',
 		justifyContent: 'space-between'
 	},
 
 	imageGroup: {
-		width: '32%'
+		width: '32%',
+		marginBottom: 25
 	}
 
 }));
@@ -64,8 +66,27 @@ const imageGroups = [
 		title: 'Mobile Engineering',
 		subtitle: 'Object Detection',
 		image: 'sea.jpg'
+	},
+	{
+		title: 'Mobile Engineering',
+		subtitle: 'Object Detection',
+		image: 'sea.jpg'
+	},
+	{
+		title: 'Mobile Engineering',
+		subtitle: 'Object Detection',
+		image: 'sea.jpg'
+	},
+	{
+		title: 'Mobile Engineering',
+		subtitle: 'Object Detection',
+		image: 'sea.jpg'
+	},
+	{
+		title: 'Mobile Engineering',
+		subtitle: 'Object Detection',
+		image: 'sea.jpg'
 	}
-
 ];
 
 function App() {
