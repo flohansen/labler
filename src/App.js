@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 
 import ImageGroup from "./_components/ImageGroup";
@@ -10,6 +10,12 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogActions from "@material-ui/core/DialogActions";
+import TextField from "@material-ui/core/TextField";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import { makeStyles } from "@material-ui/core/styles";
@@ -84,6 +90,20 @@ const imageGroups = [
 function App() {
 	const classes = useStyles();
 
+	const [addGroupOpen, setAddGroupOpen] = useState(false);
+
+	const handleAddGroupClick = () => {
+		setAddGroupOpen(true);
+	};
+
+	const handleAddGroupClose = () => {
+		setAddGroupOpen(false);
+	};
+
+	const handleAddGroupCreate = () => {
+		setAddGroupOpen(false);
+	};
+
   return (
 		<div className={classes.root}>
 			<CssBaseline />
@@ -103,7 +123,11 @@ function App() {
 			<main className={classes.content}>
 
 				<HeadLine title="Image groups">
-					<Button variant="contained" color="primary">
+					<Button
+						variant="contained"
+						color="primary"
+						onClick={handleAddGroupClick}
+					>
 						New Group
 					</Button>
 				</HeadLine>
@@ -116,6 +140,25 @@ function App() {
 					)) }
 				</MediaGrid>
 			</main>
+
+			<Dialog open={addGroupOpen} onClose={handleAddGroupClose}>
+				<DialogTitle>Create new image group</DialogTitle>
+				<DialogContent>
+					<DialogContentText>
+						Please fill out the form to create a new image group.
+					</DialogContentText>
+					<TextField label="Group name" fullWidth margin="dense" autoFocus />
+					<TextField label="Group type" fullWidth margin="dense" />
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={handleAddGroupClose} color="primary">
+						Cancel
+					</Button>
+					<Button onClick={handleAddGroupCreate} color="primary">
+						Create
+					</Button>
+				</DialogActions>
+			</Dialog>
 		</div>
   );
 }
