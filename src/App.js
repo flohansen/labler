@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 
 import ImageGroup from "./_components/ImageGroup";
+import MediaGrid from "./_components/MediaGrid";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
 import AppBar from "@material-ui/core/AppBar";
@@ -36,17 +37,6 @@ const useStyles = makeStyles(theme => ({
 		marginTop: '64px',
 		flexGrow: 1,
 		padding: theme.spacing(3)
-	},
-
-	imageGroupContainer: {
-		display: 'flex',
-		flexWrap: 'wrap',
-		justifyContent: 'space-between'
-	},
-
-	imageGroup: {
-		width: '32%',
-		marginBottom: 25
 	}
 
 }));
@@ -109,14 +99,13 @@ function App() {
 				</Toolbar>
 			</AppBar>
 			<main className={classes.content}>
-				<div className={classes.imageGroupContainer}>
+				<MediaGrid>
 					{ imageGroups.map(item => (
 						<ImageGroup
-							className={classes.imageGroup}
 							title={item.title}
 							subtitle={item.subtitle} />
 					)) }
-				</div>
+				</MediaGrid>
 			</main>
 		</div>
   );
