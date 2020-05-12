@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 
 import AuthContext from "../_contexts/AuthContext";
+import ImageGroupContext from "../_contexts/ImageGroupContext";
 import Database from "../_services/Database";
 import MediaGrid from "./MediaGrid";
 import HeadLine from "./HeadLine";
@@ -14,46 +15,9 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 
-const imageGroups = [
-	{
-		title: 'Mobile Engineering',
-		subtitle: 'Object Detection',
-		image: 'sea.jpg'
-	},
-	{
-		title: 'Mobile Engineering',
-		subtitle: 'Object Detection',
-		image: 'sea.jpg'
-	},
-	{
-		title: 'Mobile Engineering',
-		subtitle: 'Object Detection',
-		image: 'sea.jpg'
-	},
-	{
-		title: 'Mobile Engineering',
-		subtitle: 'Object Detection',
-		image: 'sea.jpg'
-	},
-	{
-		title: 'Mobile Engineering',
-		subtitle: 'Object Detection',
-		image: 'sea.jpg'
-	},
-	{
-		title: 'Mobile Engineering',
-		subtitle: 'Object Detection',
-		image: 'sea.jpg'
-	},
-	{
-		title: 'Mobile Engineering',
-		subtitle: 'Object Detection',
-		image: 'sea.jpg'
-	}
-];
-
 const ImageGroupListPage = () => {
 	const [token,] = useContext(AuthContext);
+	const [imageGroups, updateImageGroups] = useContext(ImageGroupContext);
 	const [addGroupOpen, setAddGroupOpen] = useState(false);
 	const [newGroupName, setNewGroupName] = useState('');
 	const [newGroupType, setNewGroupType] = useState('');
@@ -64,9 +28,10 @@ const ImageGroupListPage = () => {
 
 	const handleAddGroupCreate = async () => {
 		const response = await Database.createImageGroup(token, newGroupName, newGroupType);
+		setAddGroupOpen(false);
 		
 		if (response.success) {
-			setAddGroupOpen(false);
+			updateImageGroups();
 		}
 	};
 
@@ -98,8 +63,8 @@ const ImageGroupListPage = () => {
 			<MediaGrid>
 				{ imageGroups.map(item => (
 					<ImageGroup
-						title={item.title}
-						subtitle={item.subtitle} />
+						title={item.name}
+						subtitle={item.categoryid} />
 				)) }
 			</MediaGrid>
 
