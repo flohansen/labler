@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import './App.css';
 
+import AuthContext from "./_contexts/AuthContext";
+import Database from "./_services/Database";
 import ImageGroup from "./_components/ImageGroup";
 import MediaGrid from "./_components/MediaGrid";
 import HeadLine from "./_components/HeadLine";
@@ -90,7 +92,10 @@ const imageGroups = [
 function App() {
 	const classes = useStyles();
 
+	const [token,] = useContext(AuthContext);
 	const [addGroupOpen, setAddGroupOpen] = useState(false);
+	const [newGroupName, setNewGroupName] = useState('');
+	const [newGroupType, setNewGroupType] = useState('');
 
 	const handleAddGroupClick = () => {
 		setAddGroupOpen(true);
@@ -100,8 +105,20 @@ function App() {
 		setAddGroupOpen(false);
 	};
 
-	const handleAddGroupCreate = () => {
-		setAddGroupOpen(false);
+	const handleAddGroupCreate = async () => {
+		const response = await Database.createImageGroup(token, newGroupName, newGroupType);
+		
+		if (response.success) {
+			setAddGroupOpen(false);
+		}
+	};
+
+	const handleNewGroupNameChange = event => {
+		setNewGroupName(event.currentTarget.value);
+	};
+
+	const handleNewGroupTypeChange = event => {
+		setNewGroupType(event.currentTarget.value);
 	};
 
   return (
@@ -147,8 +164,19 @@ function App() {
 					<DialogContentText>
 						Please fill out the form to create a new image group.
 					</DialogContentText>
-					<TextField label="Group name" fullWidth margin="dense" autoFocus />
-					<TextField label="Group type" fullWidth margin="dense" />
+					<TextField
+						onChange={handleNewGroupNameChange}
+						label="Group name"
+						fullWidth
+						margin="dense"
+						autoFocus
+					/>
+					<TextField
+						onChange={handleNewGroupTypeChange}
+						label="Group type"
+						fullWidth
+						margin="dense"
+					/>
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={handleAddGroupClose} color="primary">
