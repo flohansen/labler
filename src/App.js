@@ -3,13 +3,14 @@ import './App.css';
 
 import ImageGroup from "./_components/ImageGroup";
 import MediaGrid from "./_components/MediaGrid";
+import HeadLine from "./_components/HeadLine";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -38,18 +39,6 @@ const useStyles = makeStyles(theme => ({
 		marginTop: '64px',
 		flexGrow: 1,
 		padding: theme.spacing(3)
-	},
-
-	header: {
-		display: 'flex',
-		marginTop: theme.spacing(2),
-		marginBottom: theme.spacing(5),
-		paddingBottom: theme.spacing(1),
-		borderBottom: '1px solid rgba(0, 0, 0, 0.1)'
-	},
-
-	headerActions: {
-		marginLeft: 'auto'
 	}
 
 }));
@@ -113,17 +102,11 @@ function App() {
 			</AppBar>
 			<main className={classes.content}>
 
-				<div className={classes.header}>
-					<Typography variant="h6">
-						Image groups
-					</Typography>
-
-					<div className={classes.headerActions}>
-						<Button variant="contained" color="primary">
-							New Group
-						</Button>
-					</div>
-				</div>
+				<HeadLine title="Image groups">
+					<Button variant="contained" color="primary">
+						New Group
+					</Button>
+				</HeadLine>
 
 				<MediaGrid>
 					{ imageGroups.map(item => (
