@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './App.css';
 
+import AuthContext from "./_contexts/AuthContext";
 import { ImageGroupProvider } from "./_contexts/ImageGroupContext";
 import ImageGroupListPage from "./_components/ImageGroupListPage";
 
@@ -9,6 +10,8 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
+import Button from "@material-ui/core/Button";
+import Avatar from "@material-ui/core/Avatar";
 import MenuIcon from "@material-ui/icons/Menu";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -28,7 +31,17 @@ const useStyles = makeStyles(theme => ({
 	},
 
 	appTitle: {
-		color: theme.palette.text.primary
+		color: theme.palette.text.primary,
+		flexGrow: 1
+	},
+
+	avatarName: {
+		color: theme.palette.text.primary,
+		marginRight: theme.spacing(1)
+	},
+
+	avatarButton: {
+		marginRight: theme.spacing(3)
 	},
 
 	content: {
@@ -42,6 +55,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function App() {
+	const { payload: [payload,] } = useContext(AuthContext);
 	const classes = useStyles();
 
   return (
@@ -58,6 +72,18 @@ function App() {
 					<Typography variant="h6" className={classes.appTitle}>
 						Labler
 					</Typography>
+
+					<Typography variant="overline" className={classes.avatarName}>
+						{payload?.username}
+					</Typography>
+					<IconButton className={classes.avatarButton}>
+						<Avatar>
+							{payload?.username?.charAt(0).toUpperCase()}
+						</Avatar>
+					</IconButton>
+					<Button size="small">
+						Logout
+					</Button>
 				</Toolbar>
 			</AppBar>
 

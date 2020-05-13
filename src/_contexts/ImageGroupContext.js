@@ -6,7 +6,7 @@ const ImageGroupContext = createContext();
 
 const ImageGroupProvider = ({ ...props }) => {
 
-	const [token,] = useContext(AuthContext);
+	const { token: [token,] } = useContext(AuthContext);
 	const [imageGroups, setImageGroups] = useState([]);
 
 	const updateImageGroups = useCallback(async () => {

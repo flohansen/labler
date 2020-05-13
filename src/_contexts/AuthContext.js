@@ -18,9 +18,19 @@ const useStateLocalStorage = key => {
 const AuthProvider = ({ ...props }) => {
 
 	const [token, setToken] = useStateLocalStorage('auth_id');
+	const [payload, setPayload] = useState();
+
+	useEffect(() => {
+		const parts = token.split('.');
+
+		if (parts.length === 3) {
+			const payload = JSON.parse(atob(parts[1]));
+			setPayload(payload);
+		}
+	}, [token]);
 
 	return (
-		<AuthContext.Provider value={[token, setToken]}>
+		<AuthContext.Provider value={{ token: [token, setToken], payload: [payload, setPayload] }}>
 			{props.children}
 		</AuthContext.Provider>
 	);

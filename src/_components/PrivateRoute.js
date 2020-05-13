@@ -4,8 +4,7 @@ import AuthContext from "../_contexts/AuthContext";
 
 function PrivateRoute({ component: Component, ...rest }) {
 
-	const [token,] = useContext(AuthContext);
-
+	const { token: [token,] } = useContext(AuthContext);
 
   return (
 		<Route {...rest} render={props =>

@@ -16,7 +16,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 
 const ImageGroupListPage = () => {
-	const [token,] = useContext(AuthContext);
+	const { token: [token,] } = useContext(AuthContext);
 	const [imageGroups, updateImageGroups] = useContext(ImageGroupContext);
 	const [addGroupOpen, setAddGroupOpen] = useState(false);
 	const [newGroupName, setNewGroupName] = useState('');
@@ -61,8 +61,9 @@ const ImageGroupListPage = () => {
 			</HeadLine>
 
 			<MediaGrid>
-				{ imageGroups.map(item => (
+				{ imageGroups.map((item, idx) => (
 					<ImageGroup
+						key={idx}
 						title={item.name}
 						subtitle={item.categoryid} />
 				)) }
