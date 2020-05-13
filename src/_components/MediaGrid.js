@@ -1,14 +1,9 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef } from "react";
 import "./MediaGrid.css";
 
 const MediaGrid = ({ columns = 3, spacing = 24, ...props }) => {
 
 	const containerRef = useRef(null);
-
-	useEffect(() => {
-		console.log(containerRef.current.clientWidth);
-
-	}, []);
 
 	return (
 		<div className="mediagrid" ref={containerRef}>

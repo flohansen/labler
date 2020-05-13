@@ -82,7 +82,7 @@ const LoginPage = () => {
 
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
-	const [, setToken] = useContext(AuthContext);
+	const { token: [, setToken] } = useContext(AuthContext);
 
 	const handleUsernameChange = event => {
 		setUsername(event.currentTarget.value);

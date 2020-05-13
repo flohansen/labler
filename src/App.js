@@ -55,8 +55,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function App() {
-	const { payload: [payload,] } = useContext(AuthContext);
+	const { payload: [payload,], token: [, setToken] } = useContext(AuthContext);
 	const classes = useStyles();
+
+	const handleLogoutClick = () => {
+		setToken('null');
+	};
 
   return (
 		<div className={classes.root}>
@@ -81,7 +85,7 @@ function App() {
 							{payload?.username?.charAt(0).toUpperCase()}
 						</Avatar>
 					</IconButton>
-					<Button size="small">
+					<Button size="small" onClick={handleLogoutClick}>
 						Logout
 					</Button>
 				</Toolbar>
