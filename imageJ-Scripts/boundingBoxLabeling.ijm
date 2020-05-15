@@ -30,7 +30,7 @@ macro "Draw Bounding Boxes [F2]" {
 	for(i = 0; i < x.length; i++) {
 		if(i % 2 == 0) {
 			x_corners[counter] = x[i];
-			y_corners[counter] = x[i];
+			y_corners[counter] = y[i];
 			counter++;
 		}
 	}
@@ -65,6 +65,10 @@ function calcBoundingBoxData(x1, x2, y1, y2) {
 	// normalized data
 	n_x_center = x_center / getWidth;
 	n_y_center = y_center / getHeight;
+
+	waitForUser("Test: " + x_center + " / " + getWidth + " = " + n_x_center);
+	waitForUser("Test: " + y_center + " / " + getHeight + " = " + n_y_center);
+
 
 	n_rectangle_width = rectangle_width / getWidth;
 	n_rectangle_heigth = rectangle_height / getHeight;
