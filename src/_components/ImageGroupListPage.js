@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 
 import AuthContext from "../_contexts/AuthContext";
+import CategoryContext from "../_contexts/CategoryContext";
 import ImageGroupContext from "../_contexts/ImageGroupContext";
 import Database from "../_services/Database";
 import MediaGrid from "./MediaGrid";
@@ -16,6 +17,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 
 const ImageGroupListPage = () => {
+	const [categories,] = useContext(CategoryContext);
 	const { token: [token,] } = useContext(AuthContext);
 	const [imageGroups, updateImageGroups] = useContext(ImageGroupContext);
 	const [addGroupOpen, setAddGroupOpen] = useState(false);
@@ -60,12 +62,16 @@ const ImageGroupListPage = () => {
 			</HeadLine>
 
 			<MediaGrid>
-				{ imageGroups.map((item, idx) => (
-					<ImageGroup
-						key={idx}
-						title={item.name}
-						subtitle={item.categoryid} />
-				)) }
+				{ imageGroups.map((item, idx) => {
+					const category= categories.find(cat => cat.id === item.categoryid);
+
+					return (
+						<ImageGroup
+							key={idx}
+							title={item.name}
+							subtitle={category.name} />
+					);
+				}) }
 			</MediaGrid>
 
 			<Dialog open={addGroupOpen} onClose={handleAddGroupClose}>

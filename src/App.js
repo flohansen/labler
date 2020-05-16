@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import './App.css';
 
+import { CategoryProvider } from "./_contexts/CategoryContext";
 import AuthContext from "./_contexts/AuthContext";
 import { ImageGroupProvider } from "./_contexts/ImageGroupContext";
 import ImageGroupListPage from "./_components/ImageGroupListPage";
@@ -93,7 +94,9 @@ function App() {
 
 			<main className={classes.content}>
 				<ImageGroupProvider>
-					<ImageGroupListPage />
+					<CategoryProvider>
+						<ImageGroupListPage />
+					</CategoryProvider>
 				</ImageGroupProvider>
 			</main>
 		</div>

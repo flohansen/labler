@@ -39,4 +39,15 @@ export default class Database {
 		return await request.json();
 	}
 
+	static async getCategories(token) {
+		const request = await fetch('http://localhost:5000/endpoint/categories', {
+			method: 'GET',
+			headers: {
+				'Authorization': `Bearer ${token}`
+			}
+		});
+
+		return await request.json();
+	}
+
 }
