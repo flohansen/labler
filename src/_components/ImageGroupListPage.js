@@ -8,6 +8,10 @@ import MediaGrid from "./MediaGrid";
 import HeadLine from "./HeadLine";
 import ImageGroup from "./ImageGroup";
 
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -46,7 +50,7 @@ const ImageGroupListPage = () => {
 	};
 
 	const handleNewGroupTypeChange = event => {
-		setNewGroupType(event.currentTarget.value);
+		setNewGroupType(event.target.value);
 	};
 
 	return (
@@ -87,12 +91,14 @@ const ImageGroupListPage = () => {
 						margin="dense"
 						autoFocus
 					/>
-					<TextField
-						onChange={handleNewGroupTypeChange}
-						label="Group type"
-						fullWidth
-						margin="dense"
-					/>
+					<FormControl fullWidth>
+						<InputLabel>Category</InputLabel>
+						<Select value={newGroupType} onChange={handleNewGroupTypeChange}>
+							{ categories.map(cat => (
+								<MenuItem key={cat.id} value={cat.id}>{cat.name}</MenuItem>
+							)) }
+						</Select>
+					</FormControl>
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={handleAddGroupClose} color="primary">
