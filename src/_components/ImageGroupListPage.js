@@ -92,8 +92,12 @@ const ImageGroupListPage = () => {
 						autoFocus
 					/>
 					<FormControl fullWidth>
-						<InputLabel>Category</InputLabel>
-						<Select value={newGroupType} onChange={handleNewGroupTypeChange}>
+						<InputLabel id="new-group-category-label">Category</InputLabel>
+						<Select
+							labelId="new-group-category-label"
+							value={newGroupType} 
+							onChange={handleNewGroupTypeChange}
+						>
 							{ categories.map(cat => (
 								<MenuItem key={cat.id} value={cat.id}>{cat.name}</MenuItem>
 							)) }
