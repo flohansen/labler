@@ -47,7 +47,6 @@ const ImageGroupListPage = () => {
 		setNewGroupType(event.currentTarget.value);
 	};
 
-
 	return (
 		<>
 			<HeadLine title="Image groups">
