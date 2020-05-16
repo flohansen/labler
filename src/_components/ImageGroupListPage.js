@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 
 import AuthContext from "../_contexts/AuthContext";
 import CategoryContext from "../_contexts/CategoryContext";
@@ -52,6 +52,10 @@ const ImageGroupListPage = () => {
 	const handleNewGroupTypeChange = event => {
 		setNewGroupType(event.target.value);
 	};
+
+	useEffect(() => {
+		setNewGroupType(categories[0]?.id);
+	}, [categories]);
 
 	return (
 		<>

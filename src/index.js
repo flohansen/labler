@@ -9,21 +9,19 @@ import { AuthProvider } from './_contexts/AuthContext';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
-  <React.StrictMode>
-		<AuthProvider>
-			<Router>
-				<Switch>
-					<PrivateRoute path="/app" component={App} />
+	<AuthProvider>
+		<Router>
+			<Switch>
+				<PrivateRoute path="/app" component={App} />
 
-					<Route path="/login">
-						<LoginPage />
-					</Route>
+				<Route path="/login">
+					<LoginPage />
+				</Route>
 
-					<Redirect from="/" to="app" />
-				</Switch>
-			</Router>
-		</AuthProvider>
-  </React.StrictMode>,
+				<Redirect from="/" to="app" />
+			</Switch>
+		</Router>
+	</AuthProvider>,
   document.getElementById('root')
 );
 
