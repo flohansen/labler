@@ -20,7 +20,7 @@ const ImageGroupPage = ({ ...props }) => {
 			const request = await Database.getImages(token, imageGroupId);
 
 			if (request.success) {
-				setHeading(request.name);
+				setHeading(request.imageGroup.name);
 			}
 		})();
 	}, [token, props.match.params.groupId]);
