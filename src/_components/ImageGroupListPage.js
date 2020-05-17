@@ -71,13 +71,15 @@ const ImageGroupListPage = () => {
 
 			<MediaGrid>
 				{ imageGroups.map((item, idx) => {
-					const category= categories.find(cat => cat.id === item.categoryid);
+					const category = categories.find(cat => cat.id === item.categoryid);
 
 					return (
 						<ImageGroup
 							key={idx}
 							title={item.name}
-							subtitle={category.name} />
+							subtitle={category.name}
+							imageGroupId={item.id}
+						/>
 					);
 				}) }
 			</MediaGrid>

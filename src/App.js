@@ -1,10 +1,12 @@
 import React, { useContext } from 'react';
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import './App.css';
 
 import { CategoryProvider } from "./_contexts/CategoryContext";
 import AuthContext from "./_contexts/AuthContext";
 import { ImageGroupProvider } from "./_contexts/ImageGroupContext";
 import ImageGroupListPage from "./_components/ImageGroupListPage";
+import ImageGroupPage from "./_components/ImageGroupPage";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
 import AppBar from "@material-ui/core/AppBar";
@@ -93,11 +95,16 @@ function App() {
 			</AppBar>
 
 			<main className={classes.content}>
-				<ImageGroupProvider>
-					<CategoryProvider>
-						<ImageGroupListPage />
-					</CategoryProvider>
-				</ImageGroupProvider>
+				<Router>
+					<Switch>
+						<ImageGroupProvider>
+							<CategoryProvider>
+								<Route exact path="/app/imageGroups/:groupId" component={ImageGroupPage} />
+								<Route exact path="/app" component={ImageGroupListPage} />
+							</CategoryProvider>
+						</ImageGroupProvider>
+					</Switch>
+				</Router>
 			</main>
 		</div>
   );

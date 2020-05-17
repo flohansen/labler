@@ -50,4 +50,15 @@ export default class Database {
 		return await request.json();
 	}
 
+	static async getImages(token, imageGroupId) {
+		const request = await fetch(`http://localhost:5000/endpoint/imageGroups/${imageGroupId}`, {
+			method: 'GET',
+			headers: {
+				'Authorization': `Bearer ${token}`
+			}
+		});
+
+		return await request.json();
+	}
+
 }
