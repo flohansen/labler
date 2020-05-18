@@ -61,4 +61,22 @@ export default class Database {
 		return await request.json();
 	}
 
+	static async uploadImages(token, imageGroupId, files) {
+		const formData = new FormData();
+
+		for (const file of files) {
+			formData.append('images', file, file.name);
+		}
+
+		const request = await fetch(`http://localhost:5000/endpoint/imageGroups/${imageGroupId}/images`, {
+			method: 'POST',
+			headers: {
+				'Authorization': `Bearer ${token}`
+			},
+			body: formData
+		});
+
+		return await request.json();
+	}
+
 }
