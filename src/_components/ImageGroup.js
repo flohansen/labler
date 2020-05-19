@@ -1,5 +1,4 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
 
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
@@ -17,19 +16,14 @@ const useStyles = makeStyles(theme => ({
 
 })); 
 
-const ImageGroup = ({ title, subtitle, imageGroupId, ...props }) => {
+const ImageGroup = ({ src, title, subtitle, onClick, imageGroupId, ...props }) => {
 	const classes = useStyles();
-	const history = useHistory();
-
-	const handleClick = () => {
-		history.push(`/app/imageGroups/${imageGroupId}`);
-	};
 
 	return (
 		<div {...props}>
 			<Card className={classes.card}>
-				<CardActionArea onClick={handleClick}>
-					<CardMedia image="sea.jpg" className={classes.media} />
+				<CardActionArea onClick={onClick}>
+					<CardMedia image={src ?? "sea.jpg"} className={classes.media} />
 					<CardHeader title={title} subheader={subtitle} />
 				</CardActionArea>
 			</Card>

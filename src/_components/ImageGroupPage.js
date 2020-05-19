@@ -3,6 +3,8 @@ import React, { useState, useEffect, useContext } from "react";
 import Database from "../_services/Database";
 import AuthContext from "../_contexts/AuthContext";
 import HeadLine from "./HeadLine";
+import MediaGrid from "./MediaGrid";
+import ImageGroup from "./ImageGroup";
 
 import Button from "@material-ui/core/Button";
 
@@ -11,6 +13,7 @@ const ImageGroupPage = ({ ...props }) => {
 	const imageGroupId = props.match.params.groupId;
 	const { token: [token,] } = useContext(AuthContext);
 	const [heading, setHeading] = useState('');
+	const [images, setImages] = useState([]);
 
 	const handleFilesPicked = async event => {
 		const files = event.target.files;
@@ -26,6 +29,7 @@ const ImageGroupPage = ({ ...props }) => {
 
 			if (request.success) {
 				setHeading(request.imageGroup.name);
+				setImages(request.imageGroup.images);
 			}
 		})();
 	}, [token, props.match.params.groupId, imageGroupId]);
@@ -50,6 +54,19 @@ const ImageGroupPage = ({ ...props }) => {
 					</Button>
 				</label>
 			</HeadLine>
+
+			<MediaGrid spacing={5}>
+				{images.map((img, idx) => {
+					return (
+						<ImageGroup
+							key={idx}
+							src={`http://localhost:5000/${img.filename}`}
+							subtitle={img.name}
+							alt=""
+						/>
+					);
+				}	)}
+			</MediaGrid>
 		</>
 	);
 

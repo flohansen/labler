@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
+import { useHistory } from "react-router-dom";
 
 import AuthContext from "../_contexts/AuthContext";
 import CategoryContext from "../_contexts/CategoryContext";
@@ -27,6 +28,7 @@ const ImageGroupListPage = () => {
 	const [addGroupOpen, setAddGroupOpen] = useState(false);
 	const [newGroupName, setNewGroupName] = useState('');
 	const [newGroupType, setNewGroupType] = useState('');
+	const history = useHistory();
 
 	const handleAddGroupClose = () => {
 		setAddGroupOpen(false);
@@ -73,8 +75,13 @@ const ImageGroupListPage = () => {
 				{ imageGroups.map((item, idx) => {
 					const category = categories.find(cat => cat.id === item.categoryid);
 
+					const handleGroupClick = () => {
+						history.push(`/app/imageGroups/${item.id}`);
+					};
+
 					return (
 						<ImageGroup
+							onClick={handleGroupClick}
 							key={idx}
 							title={item.name}
 							subtitle={category.name}
