@@ -55,7 +55,7 @@ const ImageGroupPage = ({ ...props }) => {
 				</label>
 			</HeadLine>
 
-			<MediaGrid spacing={5}>
+			<MediaGrid columns={4}>
 				{images.map((img, idx) => {
 					return (
 						<ImageGroup
