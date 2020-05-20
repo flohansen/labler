@@ -7,9 +7,23 @@ import HeadLine from "./HeadLine";
 import MediaGrid from "./MediaGrid";
 import ImageGroup from "./ImageGroup";
 
+import Chip from "@material-ui/core/Chip";
+import Typography from "@material-ui/core/Typography";
 import Drawer from "@material-ui/core/Drawer";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
+
+const labels = [
+	{
+		name: "Schuhe"
+	},
+	{
+		name: "Socken"
+	},
+	{
+		name: "Handschuhe"
+	}
+];
 
 const drawerWidth = 300;
 
@@ -26,7 +40,12 @@ const useStyles = makeStyles(theme => ({
 	drawerPaper: {
 		marginTop: 65,
 		height: `calc(100vh - 65px)`,
-		width: drawerWidth
+		width: drawerWidth,
+		padding: 15
+	},
+
+	chip: {
+		margin: 5
 	}
 }));
 
@@ -105,7 +124,24 @@ const ImageGroupPage = ({ ...props }) => {
 					className={classes.drawer}
 					anchor="right"
 					variant="permanent"
-				></Drawer>
+				>
+					<Typography variant="overline">Labels</Typography>
+					<div>
+						{labels.map(label => {
+							const handleDeleteLabel = () => {};
+							return (
+								<Chip
+									className={classes.chip}
+									key={label.name}
+									size="small"
+									label={label.name}
+									onDelete={handleDeleteLabel}
+									style={{ background: label.color }}
+								/>
+							);
+						})}
+					</div>
+				</Drawer>
 			</div>
 		</>
 	);
