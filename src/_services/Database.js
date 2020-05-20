@@ -144,4 +144,58 @@ export default class Database {
 
 		return await request.json();
 	}
+
+	static async createLabeling(
+		token,
+		start,
+		end,
+		labelId,
+		imageId,
+		imageGroupId
+	) {
+		const request = await fetch(
+			`http://localhost:5000/endpoint/imageGroups/${imageGroupId}/images/${imageId}/labels/${labelId}`,
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`
+				},
+				body: JSON.stringify({
+					start: start,
+					end: end
+				})
+			}
+		);
+
+		return await request.json();
+	}
+
+	static async deleteLabeling(token, labelingId, imageId, imageGroupId) {
+		const request = await fetch(
+			`http://localhost:5000/endpoint/imageGroups/${imageGroupId}/images/${imageId}/labels/${labelingId}`,
+			{
+				method: "DELETE",
+				headers: {
+					Authorization: `Bearer ${token}`
+				}
+			}
+		);
+
+		return await request.json();
+	}
+
+	static async getLabelings(token, imageId, imageGroupId) {
+		const request = await fetch(
+			`http://localhost:5000/endpoint/imageGroups/${imageGroupId}/images/${imageId}/labels`,
+			{
+				method: "GET",
+				headers: {
+					Authorization: `Bearer ${token}`
+				}
+			}
+		);
+
+		return await request.json();
+	}
 }

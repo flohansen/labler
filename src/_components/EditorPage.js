@@ -1,4 +1,10 @@
-import React, { useState, useContext, useRef, useEffect } from "react";
+import React, {
+	useCallback,
+	useState,
+	useContext,
+	useRef,
+	useEffect
+} from "react";
 
 import AuthContext from "../_contexts/AuthContext";
 import Database from "../_services/Database";
@@ -49,10 +55,18 @@ const EditorPage = ({ ...props }) => {
 		token: [token]
 	} = useContext(AuthContext);
 
-	const [rects, setRects] = useState([]);
 	const [image, setImage] = useState(null);
 	const [labels, setLabels] = useState([]);
+	const [labelings, setLabelings] = useState([]);
 	const [selectedLabel, setSelectedLabel] = useState({});
+
+	const updateRects = useCallback(async () => {
+		const response = await Database.getLabelings(token, imageId, imageGroupId);
+
+		if (response.success) {
+			setLabelings(response.labelings);
+		}
+	}, [imageGroupId, imageId, token]);
 
 	useEffect(() => {
 		const canvas = canvasRef.current;
@@ -73,10 +87,10 @@ const EditorPage = ({ ...props }) => {
 		const getRectAt = (x, y) => {
 			let rect = null;
 
-			for (let i = rects.length - 1; i >= 0 && rect == null; i--) {
-				const r = rects[i];
+			for (let i = labelings.length - 1; i >= 0 && rect == null; i--) {
+				const r = labelings[i];
 
-				if (x >= r.start.x && x <= r.end.x && y >= r.start.y && y <= r.end.y) {
+				if (x >= r.startx && x <= r.endx && y >= r.starty && y <= r.endy) {
 					rect = r;
 				}
 			}
@@ -107,67 +121,73 @@ const EditorPage = ({ ...props }) => {
 				end.x = event.offsetX / canvas.width;
 				end.y = event.offsetY / canvas.height;
 
+				let rect = null;
+
 				if (start.x <= end.x && start.y <= end.y) {
-					setRects(rects => [
-						...rects,
-						{
-							label: selectedLabel,
-							start: {
-								x: start.x,
-								y: start.y
-							},
-							end: {
-								x: end.x,
-								y: end.y
-							}
+					rect = {
+						start: {
+							x: start.x,
+							y: start.y
+						},
+						end: {
+							x: end.x,
+							y: end.y
 						}
-					]);
+					};
 				} else if (start.x <= end.x && start.y > end.y) {
-					setRects(rects => [
-						...rects,
-						{
-							label: selectedLabel,
-							start: {
-								x: start.x,
-								y: end.y
-							},
-							end: {
-								x: end.x,
-								y: start.y
-							}
+					rect = {
+						start: {
+							x: start.x,
+							y: end.y
+						},
+						end: {
+							x: end.x,
+							y: start.y
 						}
-					]);
+					};
 				} else if (start.x > end.x && start.y <= end.y) {
-					setRects(rects => [
-						...rects,
-						{
-							label: selectedLabel,
-							start: {
-								x: end.x,
-								y: start.y
-							},
-							end: {
-								x: start.x,
-								y: end.y
-							}
+					rect = {
+						start: {
+							x: end.x,
+							y: start.y
+						},
+						end: {
+							x: start.x,
+							y: end.y
 						}
-					]);
+					};
 				} else {
-					setRects(rects => [
-						...rects,
-						{
-							label: selectedLabel,
-							start: {
-								x: end.x,
-								y: end.y
-							},
-							end: {
-								x: start.x,
-								y: start.y
-							}
+					rect = {
+						start: {
+							x: end.x,
+							y: end.y
+						},
+						end: {
+							x: start.x,
+							y: start.y
 						}
-					]);
+					};
 				}
+
+				rect.start.x = parseInt(rect.start.x * image.width);
+				rect.end.x = parseInt(rect.end.x * image.width);
+				rect.start.y = parseInt(rect.start.y * image.height);
+				rect.end.y = parseInt(rect.end.y * image.height);
+
+				(async () => {
+					const response = await Database.createLabeling(
+						token,
+						rect.start,
+						rect.end,
+						selectedLabel.id,
+						imageId,
+						imageGroupId
+					);
+
+					if (response.success) {
+						updateRects();
+					}
+				})();
 
 				end.x = -10;
 				end.y = -10;
@@ -183,12 +203,23 @@ const EditorPage = ({ ...props }) => {
 			event.preventDefault();
 
 			const rect = getRectAt(
-				event.offsetX / canvas.width,
-				event.offsetY / canvas.height
+				(event.offsetX / canvas.width) * image.width,
+				(event.offsetY / canvas.height) * image.height
 			);
 
 			if (rect != null) {
-				setRects(rects => rects.filter(r => r !== rect));
+				(async () => {
+					const response = await Database.deleteLabeling(
+						token,
+						rect.id,
+						imageId,
+						imageGroupId
+					);
+
+					if (response.success) {
+						updateRects();
+					}
+				})();
 			}
 
 			draw();
@@ -211,30 +242,43 @@ const EditorPage = ({ ...props }) => {
 			ctx.fillStyle = cursorColor;
 			ctx.fill();
 
-			for (const rect of rects) {
-				const start = rect.start;
-				const end = rect.end;
+			if (image) {
+				for (const labeling of labelings) {
+					const start = {
+						x: labeling.startx / image.width,
+						y: labeling.starty / image.height
+					};
 
-				ctx.fillStyle = rect.label.color;
-				ctx.font = "bold 16px Arial";
-				ctx.fillText(
-					rect.label.name,
-					start.x * canvas.width,
-					start.y * canvas.height - 5
-				);
+					const end = {
+						x: labeling.endx / image.width,
+						y: labeling.endy / image.height
+					};
 
-				ctx.save();
-				ctx.beginPath();
-				ctx.rect(
-					start.x * canvas.width,
-					start.y * canvas.height,
-					(end.x - start.x) * canvas.width,
-					(end.y - start.y) * canvas.height
-				);
-				ctx.globalAlpha = 0.3;
-				ctx.fillStyle = rect.label.color;
-				ctx.fill();
-				ctx.restore();
+					const label = labels.find(l => l.id === labeling.labelid);
+
+					if (label) {
+						ctx.fillStyle = label.color;
+						ctx.font = "bold 16px Arial";
+						ctx.fillText(
+							label.name,
+							start.x * canvas.width,
+							start.y * canvas.height - 5
+						);
+
+						ctx.save();
+						ctx.beginPath();
+						ctx.rect(
+							start.x * canvas.width,
+							start.y * canvas.height,
+							(end.x - start.x) * canvas.width,
+							(end.y - start.y) * canvas.height
+						);
+						ctx.globalAlpha = 0.3;
+						ctx.fillStyle = label.color;
+						ctx.fill();
+						ctx.restore();
+					}
+				}
 			}
 
 			ctx.beginPath();
@@ -274,7 +318,16 @@ const EditorPage = ({ ...props }) => {
 			canvas.removeEventListener("click", handleClick);
 			canvas.removeEventListener("contextmenu", handleRightClick);
 		};
-	}, [image, selectedLabel, rects]);
+	}, [
+		updateRects,
+		image,
+		selectedLabel,
+		labels,
+		labelings,
+		imageId,
+		imageGroupId,
+		token
+	]);
 
 	useEffect(() => {
 		(async () => {
@@ -299,7 +352,9 @@ const EditorPage = ({ ...props }) => {
 				setSelectedLabel(response.labels[0] ?? null);
 			}
 		})();
-	}, [imageId, token, imageGroupId]);
+
+		updateRects();
+	}, [updateRects, imageId, token, imageGroupId]);
 
 	return (
 		<div className={classes.root}>
