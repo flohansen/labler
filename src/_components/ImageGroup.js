@@ -72,7 +72,12 @@ const ImageGroup = ({
 							<ImageIcon className={classes.defaultMediaIcon} />
 						</div>
 					)}
-					<CardHeader title={title} subheader={subtitle} />
+					<CardHeader
+						subheaderTypographyProps={{ noWrap: true }}
+						titleTypographyProps={{ noWrap: true }}
+						title={title}
+						subheader={subtitle}
+					/>
 				</CardActionArea>
 			</Card>
 		</div>
