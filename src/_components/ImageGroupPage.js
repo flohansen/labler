@@ -7,6 +7,12 @@ import HeadLine from "./HeadLine";
 import MediaGrid from "./MediaGrid";
 import ImageGroup from "./ImageGroup";
 
+import { TwitterPicker } from "react-color";
+import TextField from "@material-ui/core/TextField";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogActions from "@material-ui/core/DialogActions";
 import Fab from "@material-ui/core/Fab";
 import Chip from "@material-ui/core/Chip";
 import Typography from "@material-ui/core/Typography";
@@ -53,6 +59,15 @@ const useStyles = makeStyles(theme => ({
 
 	chip: {
 		margin: 5
+	},
+
+	input: {
+		marginBottom: 25
+	},
+
+	label: {
+		marginBottom: 5,
+		display: "block"
 	}
 }));
 
@@ -66,6 +81,9 @@ const ImageGroupPage = ({ ...props }) => {
 	} = useContext(AuthContext);
 	const [heading, setHeading] = useState("");
 	const [images, setImages] = useState([]);
+	const [newLabelName, setNewLabelName] = useState("New Label");
+	const [newLabelColor, setNewLabelColor] = useState("#e4e4e4");
+	const [dialogOpen, setDialogOpen] = useState(false);
 
 	const handleFilesPicked = async event => {
 		const files = event.target.files;
@@ -74,6 +92,24 @@ const ImageGroupPage = ({ ...props }) => {
 			await Database.uploadImages(token, imageGroupId, files);
 		}
 	};
+
+	const handleClickAddLabel = () => {
+		setDialogOpen(true);
+	};
+
+	const handleCloseDialog = () => {
+		setDialogOpen(false);
+	};
+
+	const handleChangeNewLabelColor = event => {
+		setNewLabelColor(event.rgb);
+	};
+
+	const handleChangeNewLabelName = event => {
+		setNewLabelName(event.currentTarget.value);
+	};
+
+	const handleCreateLabel = () => {};
 
 	useEffect(() => {
 		(async () => {
@@ -134,7 +170,7 @@ const ImageGroupPage = ({ ...props }) => {
 				>
 					<div className={classes.labelHeader}>
 						<Typography variant="overline">Labels</Typography>
-						<Fab size="small" color="primary">
+						<Fab size="small" color="primary" onClick={handleClickAddLabel}>
 							<AddIcon />
 						</Fab>
 					</div>
@@ -155,6 +191,37 @@ const ImageGroupPage = ({ ...props }) => {
 					</div>
 				</Drawer>
 			</div>
+
+			<Dialog open={dialogOpen} onClose={handleCloseDialog}>
+				<DialogTitle>Create new label</DialogTitle>
+				<DialogContent>
+					<TextField
+						value={newLabelName}
+						onChange={handleChangeNewLabelName}
+						className={classes.input}
+						label="Label name"
+						margin="dense"
+						autoFocus
+						fullWidth
+					/>
+					<Typography className={classes.label} variant="caption">
+						Choose a color
+					</Typography>
+					<TwitterPicker
+						color={newLabelColor}
+						onChange={handleChangeNewLabelColor}
+						triangle="hide"
+					/>
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={handleCloseDialog} color="primary">
+						Cancel
+					</Button>
+					<Button onClick={handleCreateLabel} color="primary">
+						Create
+					</Button>
+				</DialogActions>
+			</Dialog>
 		</>
 	);
 };
