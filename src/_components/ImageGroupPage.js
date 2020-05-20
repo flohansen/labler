@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
 
+import { useSnackbar } from "notistack";
+
 import Database from "../_services/Database";
 import AuthContext from "../_contexts/AuthContext";
 import HeadLine from "./HeadLine";
@@ -74,6 +76,7 @@ const useStyles = makeStyles(theme => ({
 const ImageGroupPage = ({ ...props }) => {
 	const classes = useStyles();
 	const history = useHistory();
+	const { enqueueSnackbar } = useSnackbar();
 
 	const imageGroupId = props.match.params.groupId;
 	const {
@@ -109,7 +112,25 @@ const ImageGroupPage = ({ ...props }) => {
 		setNewLabelName(event.currentTarget.value);
 	};
 
-	const handleCreateLabel = () => {};
+	const handleCreateLabel = async () => {
+		const rgb = newLabelColor;
+		const labelColor = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${rgb.a})`;
+
+		const response = await Database.createLabel(
+			token,
+			newLabelName,
+			labelColor,
+			imageGroupId
+		);
+
+		if (response.success) {
+			enqueueSnackbar("New label was created", { variant: "success" });
+		} else {
+			enqueueSnackbar("Could not create new label", { variant: "error" });
+		}
+
+		setDialogOpen(false);
+	};
 
 	useEffect(() => {
 		(async () => {

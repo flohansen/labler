@@ -1,10 +1,9 @@
 export default class Database {
-
 	static async auth(username, password) {
-		const request = await fetch('http://localhost:5000/auth/login', {
-			method: 'POST',
+		const request = await fetch("http://localhost:5000/auth/login", {
+			method: "POST",
 			headers: {
-				'Content-Type': 'application/json'
+				"Content-Type": "application/json"
 			},
 			body: JSON.stringify({ username: username, password: password })
 		});
@@ -13,11 +12,11 @@ export default class Database {
 	}
 
 	static async createImageGroup(token, groupName, groupType) {
-		const request = await fetch('http://localhost:5000/endpoint/groups', {
-			method: 'PUT',
+		const request = await fetch("http://localhost:5000/endpoint/groups", {
+			method: "PUT",
 			headers: {
-				'Content-Type': 'application/json',
-				'Authorization': `Bearer ${token}`
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`
 			},
 			body: JSON.stringify({
 				groupName: groupName,
@@ -29,10 +28,10 @@ export default class Database {
 	}
 
 	static async getImageGroups(token) {
-		const request = await fetch('http://localhost:5000/endpoint/groups', {
-			method: 'GET',
+		const request = await fetch("http://localhost:5000/endpoint/groups", {
+			method: "GET",
 			headers: {
-				'Authorization': `Bearer ${token}`
+				Authorization: `Bearer ${token}`
 			}
 		});
 
@@ -40,10 +39,10 @@ export default class Database {
 	}
 
 	static async getCategories(token) {
-		const request = await fetch('http://localhost:5000/endpoint/categories', {
-			method: 'GET',
+		const request = await fetch("http://localhost:5000/endpoint/categories", {
+			method: "GET",
 			headers: {
-				'Authorization': `Bearer ${token}`
+				Authorization: `Bearer ${token}`
 			}
 		});
 
@@ -51,12 +50,15 @@ export default class Database {
 	}
 
 	static async getImages(token, imageGroupId) {
-		const request = await fetch(`http://localhost:5000/endpoint/imageGroups/${imageGroupId}`, {
-			method: 'GET',
-			headers: {
-				'Authorization': `Bearer ${token}`
+		const request = await fetch(
+			`http://localhost:5000/endpoint/imageGroups/${imageGroupId}`,
+			{
+				method: "GET",
+				headers: {
+					Authorization: `Bearer ${token}`
+				}
 			}
-		});
+		);
 
 		return await request.json();
 	}
@@ -65,29 +67,53 @@ export default class Database {
 		const formData = new FormData();
 
 		for (const file of files) {
-			formData.append('images', file, file.name);
+			formData.append("images", file, file.name);
 		}
 
-		const request = await fetch(`http://localhost:5000/endpoint/imageGroups/${imageGroupId}/images`, {
-			method: 'POST',
-			headers: {
-				'Authorization': `Bearer ${token}`
-			},
-			body: formData
-		});
+		const request = await fetch(
+			`http://localhost:5000/endpoint/imageGroups/${imageGroupId}/images`,
+			{
+				method: "POST",
+				headers: {
+					Authorization: `Bearer ${token}`
+				},
+				body: formData
+			}
+		);
 
 		return await request.json();
 	}
 
 	static async getImage(token, imageId) {
-		const request = await fetch(`http://localhost:5000/endpoint/images/${imageId}`, {
-			method: 'GET',
-			headers: {
-				'Authorization': `Bearer ${token}`
+		const request = await fetch(
+			`http://localhost:5000/endpoint/images/${imageId}`,
+			{
+				method: "GET",
+				headers: {
+					Authorization: `Bearer ${token}`
+				}
 			}
-		});
+		);
 
 		return await request.json();
 	}
 
+	static async createLabel(token, labelName, labelColor, imageGroupId) {
+		const request = await fetch(
+			`http://localhost:5000/endpoint/imageGroups/${imageGroupId}/labels`,
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`
+				},
+				body: JSON.stringify({
+					labelName: labelName,
+					labelColor: labelColor
+				})
+			}
+		);
+
+		return await request.json();
+	}
 }
