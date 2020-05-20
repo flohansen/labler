@@ -276,8 +276,6 @@ const EditorPage = ({ ...props }) => {
 		};
 	}, [image, selectedLabel, rects]);
 
-	console.log("rerender");
-
 	useEffect(() => {
 		(async () => {
 			const response = await Database.getImage(token, imageId);
