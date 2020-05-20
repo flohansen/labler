@@ -7,10 +7,12 @@ import HeadLine from "./HeadLine";
 import MediaGrid from "./MediaGrid";
 import ImageGroup from "./ImageGroup";
 
+import Fab from "@material-ui/core/Fab";
 import Chip from "@material-ui/core/Chip";
 import Typography from "@material-ui/core/Typography";
 import Drawer from "@material-ui/core/Drawer";
 import Button from "@material-ui/core/Button";
+import AddIcon from "@material-ui/icons/Add";
 import { makeStyles } from "@material-ui/core/styles";
 
 const labels = [
@@ -42,6 +44,11 @@ const useStyles = makeStyles(theme => ({
 		height: `calc(100vh - 65px)`,
 		width: drawerWidth,
 		padding: 15
+	},
+
+	labelHeader: {
+		display: "flex",
+		justifyContent: "space-between"
 	},
 
 	chip: {
@@ -125,7 +132,12 @@ const ImageGroupPage = ({ ...props }) => {
 					anchor="right"
 					variant="permanent"
 				>
-					<Typography variant="overline">Labels</Typography>
+					<div className={classes.labelHeader}>
+						<Typography variant="overline">Labels</Typography>
+						<Fab size="small" color="primary">
+							<AddIcon />
+						</Fab>
+					</div>
 					<div>
 						{labels.map(label => {
 							const handleDeleteLabel = () => {};
