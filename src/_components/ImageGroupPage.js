@@ -42,6 +42,10 @@ const useStyles = makeStyles(theme => ({
 		padding: 15
 	},
 
+	images: {
+		width: "100%"
+	},
+
 	labelHeader: {
 		display: "flex",
 		justifyContent: "space-between"
@@ -81,7 +85,16 @@ const ImageGroupPage = ({ ...props }) => {
 		const files = event.target.files;
 
 		if (files.length > 0) {
-			await Database.uploadImages(token, imageGroupId, files);
+			const response = await Database.uploadImages(token, imageGroupId, files);
+
+			if (response.success) {
+				enqueueSnackbar("Uploaded files successfully", { variant: "success" });
+				updateImages();
+			} else {
+				enqueueSnackbar("An error occured while uploading files", {
+					variant: "error"
+				});
+			}
 		}
 	};
 
@@ -130,23 +143,24 @@ const ImageGroupPage = ({ ...props }) => {
 		}
 	}, [imageGroupId, token]);
 
+	const updateImages = useCallback(async () => {
+		const request = await Database.getImages(token, imageGroupId);
+
+		if (request.success) {
+			setHeading(request.imageGroup.name);
+			setImages(request.imageGroup.images);
+		}
+	}, [token, imageGroupId]);
+
 	useEffect(() => {
-		(async () => {
-			const request = await Database.getImages(token, imageGroupId);
-
-			if (request.success) {
-				setHeading(request.imageGroup.name);
-				setImages(request.imageGroup.images);
-			}
-		})();
-
+		updateImages();
 		updateLabels();
-	}, [token, props.match.params.groupId, imageGroupId, updateLabels]);
+	}, [updateImages, updateLabels]);
 
 	return (
 		<>
 			<div className={classes.root}>
-				<div>
+				<div className={classes.images}>
 					<HeadLine title={heading}>
 						<input
 							type="file"
