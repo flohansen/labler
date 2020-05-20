@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useHistory } from "react-router-dom";
 
 import Database from "../_services/Database";
 import AuthContext from "../_contexts/AuthContext";
@@ -9,6 +10,7 @@ import ImageGroup from "./ImageGroup";
 import Button from "@material-ui/core/Button";
 
 const ImageGroupPage = ({ ...props }) => {
+	const history = useHistory();
 
 	const imageGroupId = props.match.params.groupId;
 	const { token: [token,] } = useContext(AuthContext);
@@ -57,8 +59,14 @@ const ImageGroupPage = ({ ...props }) => {
 
 			<MediaGrid columns={4}>
 				{images.map((img, idx) => {
+
+					const handleClick = () => {
+						history.push(`/app/imageGroups/${imageGroupId}/images/${img.id}`);
+					};
+
 					return (
 						<ImageGroup
+							onClick={handleClick}
 							key={idx}
 							src={`http://localhost:5000/${img.filename}`}
 							subtitle={img.name}

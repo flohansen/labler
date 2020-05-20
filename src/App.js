@@ -7,6 +7,7 @@ import AuthContext from "./_contexts/AuthContext";
 import { ImageGroupProvider } from "./_contexts/ImageGroupContext";
 import ImageGroupListPage from "./_components/ImageGroupListPage";
 import ImageGroupPage from "./_components/ImageGroupPage";
+import EditorPage from "./_components/EditorPage";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
 import AppBar from "@material-ui/core/AppBar";
@@ -101,6 +102,7 @@ function App() {
 							<CategoryProvider>
 								<Route exact path="/app/imageGroups/:groupId" component={ImageGroupPage} />
 								<Route exact path="/app" component={ImageGroupListPage} />
+								<Route exact path="/app/imageGroups/:groupId/images/:imageId" component={EditorPage} />
 							</CategoryProvider>
 						</ImageGroupProvider>
 					</Switch>
