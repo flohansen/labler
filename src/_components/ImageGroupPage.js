@@ -186,6 +186,7 @@ const ImageGroupPage = ({ ...props }) => {
 
 							return (
 								<ImageGroup
+									checked={img.labelings > 0}
 									onClick={handleClick}
 									key={idx}
 									src={`http://localhost:5000/${img.filename}`}
