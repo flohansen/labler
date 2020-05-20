@@ -6,6 +6,8 @@ import React, {
 	useEffect
 } from "react";
 
+import { useHistory } from "react-router-dom";
+
 import AuthContext from "../_contexts/AuthContext";
 import Database from "../_services/Database";
 
@@ -48,6 +50,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const EditorPage = ({ ...props }) => {
+	const history = useHistory();
 	const classes = useStyles();
 	const canvasRef = useRef(null);
 	const { imageGroupId, imageId } = props.match.params;
@@ -55,10 +58,35 @@ const EditorPage = ({ ...props }) => {
 		token: [token]
 	} = useContext(AuthContext);
 
+	const [next, setNext] = useState(null);
+	const [prev, setPrev] = useState(null);
 	const [image, setImage] = useState(null);
 	const [labels, setLabels] = useState([]);
 	const [labelings, setLabelings] = useState([]);
 	const [selectedLabel, setSelectedLabel] = useState({});
+
+	const handleKeyDown = useCallback(
+		event => {
+			console.log(event.keyCode);
+
+			switch (event.keyCode) {
+				case 37:
+					if (prev) {
+						history.push(`/app/imageGroups/${imageGroupId}/images/${prev.id}`);
+					}
+					break;
+
+				case 39:
+					if (next) {
+						history.push(`/app/imageGroups/${imageGroupId}/images/${next.id}`);
+					}
+					break;
+
+				default:
+			}
+		},
+		[history, prev, next, imageGroupId]
+	);
 
 	const updateRects = useCallback(async () => {
 		const response = await Database.getLabelings(token, imageId, imageGroupId);
@@ -67,6 +95,24 @@ const EditorPage = ({ ...props }) => {
 			setLabelings(response.labelings);
 		}
 	}, [imageGroupId, imageId, token]);
+
+	const updateImages = useCallback(async () => {
+		const response = await Database.getImages(token, imageGroupId);
+
+		if (response.success) {
+			const current = response.imageGroup.images.find(
+				i => i.id === parseInt(imageId)
+			);
+
+			const currentIndex = response.imageGroup.images.indexOf(current);
+			const prevIndex = currentIndex - 1;
+			const nextIndex = currentIndex + 1;
+
+			setPrev(response.imageGroup.images[prevIndex]);
+
+			setNext(response.imageGroup.images[nextIndex]);
+		}
+	}, [token, imageGroupId, imageId]);
 
 	useEffect(() => {
 		const canvas = canvasRef.current;
@@ -309,6 +355,7 @@ const EditorPage = ({ ...props }) => {
 		canvas.addEventListener("mousemove", handleMouseMove);
 		canvas.addEventListener("click", handleClick);
 		canvas.addEventListener("contextmenu", handleRightClick);
+		window.addEventListener("keydown", handleKeyDown);
 
 		resizeCanvas();
 		draw();
@@ -317,8 +364,10 @@ const EditorPage = ({ ...props }) => {
 			canvas.removeEventListener("mousemove", handleMouseMove);
 			canvas.removeEventListener("click", handleClick);
 			canvas.removeEventListener("contextmenu", handleRightClick);
+			window.removeEventListener("keydown", handleKeyDown);
 		};
 	}, [
+		handleKeyDown,
 		updateRects,
 		image,
 		selectedLabel,
@@ -354,7 +403,8 @@ const EditorPage = ({ ...props }) => {
 		})();
 
 		updateRects();
-	}, [updateRects, imageId, token, imageGroupId]);
+		updateImages();
+	}, [updateRects, updateImages, imageId, token, imageGroupId]);
 
 	return (
 		<div className={classes.root}>
