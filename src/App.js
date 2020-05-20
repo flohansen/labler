@@ -107,7 +107,7 @@ function App() {
 									<Route exact path="/app" component={ImageGroupListPage} />
 									<Route
 										exact
-										path="/app/imageGroups/:groupId/images/:imageId"
+										path="/app/imageGroups/:imageGroupId/images/:imageId"
 										component={EditorPage}
 									/>
 								</CategoryProvider>
