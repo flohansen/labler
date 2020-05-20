@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useCallback, useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
 
 import { useSnackbar } from "notistack";
@@ -22,18 +22,6 @@ import Drawer from "@material-ui/core/Drawer";
 import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
 import { makeStyles } from "@material-ui/core/styles";
-
-const labels = [
-	{
-		name: "Schuhe"
-	},
-	{
-		name: "Socken"
-	},
-	{
-		name: "Handschuhe"
-	}
-];
 
 const drawerWidth = 300;
 
@@ -87,6 +75,7 @@ const ImageGroupPage = ({ ...props }) => {
 	const [newLabelName, setNewLabelName] = useState("New Label");
 	const [newLabelColor, setNewLabelColor] = useState("#e4e4e4");
 	const [dialogOpen, setDialogOpen] = useState(false);
+	const [labels, setLabels] = useState([]);
 
 	const handleFilesPicked = async event => {
 		const files = event.target.files;
@@ -125,12 +114,21 @@ const ImageGroupPage = ({ ...props }) => {
 
 		if (response.success) {
 			enqueueSnackbar("New label was created", { variant: "success" });
+			updateLabels();
 		} else {
 			enqueueSnackbar("Could not create new label", { variant: "error" });
 		}
 
 		setDialogOpen(false);
 	};
+
+	const updateLabels = useCallback(async () => {
+		const request = await Database.getLabels(token, imageGroupId);
+
+		if (request.success) {
+			setLabels(request.labels);
+		}
+	}, [imageGroupId, token]);
 
 	useEffect(() => {
 		(async () => {
@@ -141,7 +139,9 @@ const ImageGroupPage = ({ ...props }) => {
 				setImages(request.imageGroup.images);
 			}
 		})();
-	}, [token, props.match.params.groupId, imageGroupId]);
+
+		updateLabels();
+	}, [token, props.match.params.groupId, imageGroupId, updateLabels]);
 
 	return (
 		<>
@@ -197,7 +197,25 @@ const ImageGroupPage = ({ ...props }) => {
 					</div>
 					<div>
 						{labels.map(label => {
-							const handleDeleteLabel = () => {};
+							const handleDeleteLabel = async () => {
+								const response = await Database.deleteLabel(
+									token,
+									label.id,
+									imageGroupId
+								);
+
+								if (response.success) {
+									enqueueSnackbar("Label has been deleted", {
+										variant: "success"
+									});
+									updateLabels();
+								} else {
+									enqueueSnackbar("Could not delete label", {
+										variant: "error"
+									});
+								}
+							};
+
 							return (
 								<Chip
 									className={classes.chip}

@@ -116,4 +116,32 @@ export default class Database {
 
 		return await request.json();
 	}
+
+	static async getLabels(token, imageGroupId) {
+		const request = await fetch(
+			`http://localhost:5000/endpoint/imageGroups/${imageGroupId}/labels`,
+			{
+				method: "GET",
+				headers: {
+					Authorization: `Bearer ${token}`
+				}
+			}
+		);
+
+		return await request.json();
+	}
+
+	static async deleteLabel(token, labelId, imageGroupId) {
+		const request = await fetch(
+			`http://localhost:5000/endpoint/imageGroups/${imageGroupId}/labels/${labelId}`,
+			{
+				method: "DELETE",
+				headers: {
+					Authorization: `Bearer ${token}`
+				}
+			}
+		);
+
+		return await request.json();
+	}
 }
