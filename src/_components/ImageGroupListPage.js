@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 
 import AuthContext from "../_contexts/AuthContext";
@@ -22,12 +22,14 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 
 const ImageGroupListPage = () => {
-	const [categories,] = useContext(CategoryContext);
-	const { token: [token,] } = useContext(AuthContext);
+	const [categories] = useContext(CategoryContext);
+	const {
+		token: [token]
+	} = useContext(AuthContext);
 	const [imageGroups, updateImageGroups] = useContext(ImageGroupContext);
 	const [addGroupOpen, setAddGroupOpen] = useState(false);
-	const [newGroupName, setNewGroupName] = useState('');
-	const [newGroupType, setNewGroupType] = useState('');
+	const [newGroupName, setNewGroupName] = useState("");
+	const [newGroupType, setNewGroupType] = useState("");
 	const history = useHistory();
 
 	const handleAddGroupClose = () => {
@@ -35,9 +37,13 @@ const ImageGroupListPage = () => {
 	};
 
 	const handleAddGroupCreate = async () => {
-		const response = await Database.createImageGroup(token, newGroupName, newGroupType);
+		const response = await Database.createImageGroup(
+			token,
+			newGroupName,
+			newGroupType
+		);
 		setAddGroupOpen(false);
-		
+
 		if (response.success) {
 			updateImageGroups();
 		}
@@ -72,7 +78,7 @@ const ImageGroupListPage = () => {
 			</HeadLine>
 
 			<MediaGrid>
-				{ imageGroups.map((item, idx) => {
+				{imageGroups.map((item, idx) => {
 					const category = categories.find(cat => cat.id === item.categoryid);
 
 					const handleGroupClick = () => {
@@ -81,6 +87,11 @@ const ImageGroupListPage = () => {
 
 					return (
 						<ImageGroup
+							src={
+								item.thumbnail
+									? `http://localhost:5000/${item.thumbnail}`
+									: null
+							}
 							onClick={handleGroupClick}
 							key={idx}
 							title={item.name}
@@ -88,7 +99,7 @@ const ImageGroupListPage = () => {
 							imageGroupId={item.id}
 						/>
 					);
-				}) }
+				})}
 			</MediaGrid>
 
 			<Dialog open={addGroupOpen} onClose={handleAddGroupClose}>
@@ -108,12 +119,14 @@ const ImageGroupListPage = () => {
 						<InputLabel id="new-group-category-label">Category</InputLabel>
 						<Select
 							labelId="new-group-category-label"
-							value={newGroupType} 
+							value={newGroupType}
 							onChange={handleNewGroupTypeChange}
 						>
-							{ categories.map(cat => (
-								<MenuItem key={cat.id} value={cat.id}>{cat.name}</MenuItem>
-							)) }
+							{categories.map(cat => (
+								<MenuItem key={cat.id} value={cat.id}>
+									{cat.name}
+								</MenuItem>
+							))}
 						</Select>
 					</FormControl>
 				</DialogContent>
@@ -128,7 +141,6 @@ const ImageGroupListPage = () => {
 			</Dialog>
 		</>
 	);
-
 };
 
 export default ImageGroupListPage;
