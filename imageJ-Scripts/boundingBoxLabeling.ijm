@@ -30,7 +30,7 @@ macro "Draw Bounding Boxes [F2]" {
 	for(i = 0; i < x.length; i++) {
 		if(i % 2 == 0) {
 			x_corners[counter] = x[i];
-			y_corners[counter] = x[i];
+			y_corners[counter] = y[i];
 			counter++;
 		}
 	}
