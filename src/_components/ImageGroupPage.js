@@ -7,7 +7,7 @@ import Database from "../_services/Database";
 import AuthContext from "../_contexts/AuthContext";
 import HeadLine from "./HeadLine";
 import MediaGrid from "./MediaGrid";
-import ImageGroup from "./ImageGroup";
+import ImageCard from "./ImageCard";
 
 import { TwitterPicker } from "react-color";
 import TextField from "@material-ui/core/TextField";
@@ -185,7 +185,7 @@ const ImageGroupPage = ({ ...props }) => {
 							};
 
 							return (
-								<ImageGroup
+								<ImageCard
 									checked={img.labelings > 0}
 									onClick={handleClick}
 									key={idx}

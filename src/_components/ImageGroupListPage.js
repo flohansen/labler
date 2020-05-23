@@ -7,7 +7,7 @@ import ImageGroupContext from "../_contexts/ImageGroupContext";
 import Database from "../_services/Database";
 import MediaGrid from "./MediaGrid";
 import HeadLine from "./HeadLine";
-import ImageGroup from "./ImageGroup";
+import ImageGroupCard from "./ImageGroupCard";
 
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
@@ -85,8 +85,26 @@ const ImageGroupListPage = () => {
 						history.push(`/app/imageGroups/${item.id}`);
 					};
 
+					const handleDownload = async () => {
+						const request = await fetch(
+							`http://localhost:5000/endpoint/imageGroups/${item.id}/export`,
+							{
+								method: "GET",
+								headers: {
+									Authorization: `Bearer ${token}`
+								}
+							}
+						);
+
+						const blob = await request.blob();
+						const file = await window.URL.createObjectURL(blob);
+						window.open(file, "_blank");
+					};
+
 					return (
-						<ImageGroup
+						<ImageGroupCard
+							downloadable
+							onDownload={handleDownload}
 							src={
 								item.thumbnail
 									? `http://localhost:5000/${item.thumbnail}`
