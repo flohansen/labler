@@ -1,6 +1,8 @@
+const hostname = "http://217.160.60.183:5000";
+
 export default class Database {
 	static async auth(username, password) {
-		const request = await fetch("http://localhost:5000/auth/login", {
+		const request = await fetch(`${hostname}/auth/login`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json"
@@ -12,7 +14,7 @@ export default class Database {
 	}
 
 	static async createImageGroup(token, groupName, groupType) {
-		const request = await fetch("http://localhost:5000/endpoint/groups", {
+		const request = await fetch(`${hostname}/endpoint/groups`, {
 			method: "PUT",
 			headers: {
 				"Content-Type": "application/json",
@@ -28,7 +30,7 @@ export default class Database {
 	}
 
 	static async getImageGroups(token) {
-		const request = await fetch("http://localhost:5000/endpoint/groups", {
+		const request = await fetch(`${hostname}/endpoint/groups`, {
 			method: "GET",
 			headers: {
 				Authorization: `Bearer ${token}`
@@ -39,7 +41,7 @@ export default class Database {
 	}
 
 	static async getCategories(token) {
-		const request = await fetch("http://localhost:5000/endpoint/categories", {
+		const request = await fetch(`${hostname}/endpoint/categories`, {
 			method: "GET",
 			headers: {
 				Authorization: `Bearer ${token}`
@@ -51,7 +53,7 @@ export default class Database {
 
 	static async getImages(token, imageGroupId) {
 		const request = await fetch(
-			`http://localhost:5000/endpoint/imageGroups/${imageGroupId}`,
+			`${hostname}/endpoint/imageGroups/${imageGroupId}`,
 			{
 				method: "GET",
 				headers: {
@@ -71,7 +73,7 @@ export default class Database {
 		}
 
 		const request = await fetch(
-			`http://localhost:5000/endpoint/imageGroups/${imageGroupId}/images`,
+			`${hostname}/endpoint/imageGroups/${imageGroupId}/images`,
 			{
 				method: "POST",
 				headers: {
@@ -85,22 +87,19 @@ export default class Database {
 	}
 
 	static async getImage(token, imageId) {
-		const request = await fetch(
-			`http://localhost:5000/endpoint/images/${imageId}`,
-			{
-				method: "GET",
-				headers: {
-					Authorization: `Bearer ${token}`
-				}
+		const request = await fetch(`${hostname}/endpoint/images/${imageId}`, {
+			method: "GET",
+			headers: {
+				Authorization: `Bearer ${token}`
 			}
-		);
+		});
 
 		return await request.json();
 	}
 
 	static async createLabel(token, labelName, labelColor, imageGroupId) {
 		const request = await fetch(
-			`http://localhost:5000/endpoint/imageGroups/${imageGroupId}/labels`,
+			`${hostname}/endpoint/imageGroups/${imageGroupId}/labels`,
 			{
 				method: "POST",
 				headers: {
@@ -119,7 +118,7 @@ export default class Database {
 
 	static async getLabels(token, imageGroupId) {
 		const request = await fetch(
-			`http://localhost:5000/endpoint/imageGroups/${imageGroupId}/labels`,
+			`${hostname}/endpoint/imageGroups/${imageGroupId}/labels`,
 			{
 				method: "GET",
 				headers: {
@@ -133,7 +132,7 @@ export default class Database {
 
 	static async deleteLabel(token, labelId, imageGroupId) {
 		const request = await fetch(
-			`http://localhost:5000/endpoint/imageGroups/${imageGroupId}/labels/${labelId}`,
+			`${hostname}/endpoint/imageGroups/${imageGroupId}/labels/${labelId}`,
 			{
 				method: "DELETE",
 				headers: {
@@ -154,7 +153,7 @@ export default class Database {
 		imageGroupId
 	) {
 		const request = await fetch(
-			`http://localhost:5000/endpoint/imageGroups/${imageGroupId}/images/${imageId}/labels/${labelId}`,
+			`${hostname}/endpoint/imageGroups/${imageGroupId}/images/${imageId}/labels/${labelId}`,
 			{
 				method: "POST",
 				headers: {
@@ -173,7 +172,7 @@ export default class Database {
 
 	static async deleteLabeling(token, labelingId, imageId, imageGroupId) {
 		const request = await fetch(
-			`http://localhost:5000/endpoint/imageGroups/${imageGroupId}/images/${imageId}/labels/${labelingId}`,
+			`${hostname}/endpoint/imageGroups/${imageGroupId}/images/${imageId}/labels/${labelingId}`,
 			{
 				method: "DELETE",
 				headers: {
@@ -187,7 +186,7 @@ export default class Database {
 
 	static async getLabelings(token, imageId, imageGroupId) {
 		const request = await fetch(
-			`http://localhost:5000/endpoint/imageGroups/${imageGroupId}/images/${imageId}/labels`,
+			`${hostname}/endpoint/imageGroups/${imageGroupId}/images/${imageId}/labels`,
 			{
 				method: "GET",
 				headers: {
