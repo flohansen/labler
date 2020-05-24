@@ -67,8 +67,6 @@ const EditorPage = ({ ...props }) => {
 
 	const handleKeyDown = useCallback(
 		event => {
-			console.log(event.keyCode);
-
 			switch (event.keyCode) {
 				case 37:
 					if (prev) {
