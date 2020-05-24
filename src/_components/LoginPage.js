@@ -1,8 +1,8 @@
 import React, { useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
 
-import Database from '../_services/Database';
-import AuthContext from '../_contexts/AuthContext';
+import Database from "../_services/Database";
+import AuthContext from "../_contexts/AuthContext";
 import waves from "../_icons/waves.svg";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -15,26 +15,25 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
-
 	root: {
-		display: 'flex',
-		flexDirection: 'column',
-		width: '100vw',
-		height: '100vh',
-		alignItems: 'center',
-		justifyContent: 'center',
-		background: '#7586A0'
+		display: "flex",
+		flexDirection: "column",
+		width: "100vw",
+		height: "100vh",
+		alignItems: "center",
+		justifyContent: "center",
+		background: "#7586A0"
 	},
-	
+
 	waves: {
-		position: 'absolute',
+		position: "absolute",
 		bottom: 0,
 		left: 0,
-		width: '100%',
-		height: '60%',
-		maxHeight: '50%',
-		objectFit: 'cover',
-		objectPosition: '50% 0',
+		width: "100%",
+		height: "60%",
+		maxHeight: "50%",
+		objectFit: "cover",
+		objectPosition: "50% 0",
 		zIndex: 0
 	},
 
@@ -62,8 +61,8 @@ const useStyles = makeStyles(theme => ({
 	},
 
 	cardContent: {
-		display: 'flex',
-		flexDirection: 'column',
+		display: "flex",
+		flexDirection: "column",
 
 		"& > *": {
 			marginBottom: theme.spacing(4)
@@ -73,16 +72,17 @@ const useStyles = makeStyles(theme => ({
 			marginBottom: 0
 		}
 	}
-
 }));
 
 const LoginPage = () => {
 	const classes = useStyles();
 	const history = useHistory();
 
-	const [username, setUsername] = useState('');
-	const [password, setPassword] = useState('');
-	const { token: [, setToken] } = useContext(AuthContext);
+	const [username, setUsername] = useState("");
+	const [password, setPassword] = useState("");
+	const {
+		token: [, setToken]
+	} = useContext(AuthContext);
 
 	const handleUsernameChange = event => {
 		setUsername(event.currentTarget.value);
@@ -97,7 +97,18 @@ const LoginPage = () => {
 
 		if (response.success) {
 			setToken(response.token);
-			history.push('/app');
+			history.push("/app");
+		}
+	};
+
+	const handleKeyPress = event => {
+		switch (event.charCode) {
+			// Enter
+			case 13:
+				handleLoginClick();
+				break;
+
+			default:
 		}
 	};
 
@@ -105,18 +116,10 @@ const LoginPage = () => {
 		<div className={classes.root}>
 			<CssBaseline />
 
-			<img
-				className={classes.waves}
-				src={waves}
-				alt=""
-			/>
+			<img className={classes.waves} src={waves} alt="" />
 
 			<div className={classes.appInfo}>
-				<Typography
-					variant="h2"
-					align="center"
-					className={classes.appName}
-				>
+				<Typography variant="h2" align="center" className={classes.appName}>
 					Labler
 				</Typography>
 				<Typography
@@ -128,7 +131,7 @@ const LoginPage = () => {
 				</Typography>
 			</div>
 
-			<Card className={classes.card}>
+			<Card onKeyPress={handleKeyPress} className={classes.card}>
 				<CardHeader title="Login" />
 				<CardContent className={classes.cardContent}>
 					<TextField
@@ -144,12 +147,17 @@ const LoginPage = () => {
 						type="password"
 						onChange={handlePasswordChange}
 					/>
-					<Button color="primary" variant="contained" onClick={handleLoginClick}>Login</Button>
+					<Button
+						color="primary"
+						variant="contained"
+						onClick={handleLoginClick}
+					>
+						Login
+					</Button>
 				</CardContent>
 			</Card>
 		</div>
 	);
-
 };
 
 export default LoginPage;
