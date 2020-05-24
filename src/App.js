@@ -28,27 +28,27 @@ const useStyles = makeStyles(theme => ({
 	},
 
 	appBar: {
-		background: "#fff",
 		borderBottom: "1px solid rgba(0, 0, 0, 0.1)"
 	},
 
 	menuButton: {
-		marginRight: theme.spacing(2)
+		marginRight: theme.spacing(2),
+		color: theme.palette.primary.contrastText
 	},
 
 	appTitle: {
-		color: theme.palette.text.primary,
+		color: theme.palette.primary.contrastText,
 		marginRight: "auto",
 		cursor: "pointer"
 	},
 
 	avatarName: {
-		color: theme.palette.text.primary,
+		marginLeft: theme.spacing(3),
 		marginRight: theme.spacing(1)
 	},
 
-	avatarButton: {
-		marginRight: theme.spacing(3)
+	logoutButton: {
+		color: theme.palette.primary.contrastText
 	},
 
 	content: {
@@ -85,15 +85,20 @@ function App() {
 							<Typography variant="h6">Labler</Typography>
 						</Link>
 
+						<Button
+							size="small"
+							className={classes.logoutButton}
+							onClick={handleLogoutClick}
+						>
+							Logout
+						</Button>
+
 						<Typography variant="overline" className={classes.avatarName}>
 							{payload?.username}
 						</Typography>
 						<IconButton className={classes.avatarButton}>
 							<Avatar>{payload?.username?.charAt(0).toUpperCase()}</Avatar>
 						</IconButton>
-						<Button size="small" onClick={handleLogoutClick}>
-							Logout
-						</Button>
 					</Toolbar>
 				</AppBar>
 
