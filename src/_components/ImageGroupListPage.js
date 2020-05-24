@@ -98,7 +98,7 @@ const ImageGroupListPage = () => {
 
 						const blob = await request.blob();
 						const file = await window.URL.createObjectURL(blob);
-						window.open(file, "_blank");
+						window.location.assign(file);
 					};
 
 					return (
