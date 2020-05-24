@@ -1,4 +1,4 @@
-const hostname = "http://217.160.60.183:5000";
+const hostname = "https://217.160.60.183:5000";
 
 export default class Database {
 	static async auth(username, password) {
