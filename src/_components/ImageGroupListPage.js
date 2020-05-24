@@ -20,6 +20,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
+import AddIcon from "@material-ui/icons/Add";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
@@ -77,11 +78,13 @@ const ImageGroupListPage = () => {
 		<>
 			<HeadLine title="Your image groups">
 				<Button
+					size="small"
+					startIcon={<AddIcon />}
 					variant="contained"
 					color="primary"
 					onClick={handleAddGroupClick}
 				>
-					New Group
+					Group
 				</Button>
 			</HeadLine>
 

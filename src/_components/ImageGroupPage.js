@@ -15,12 +15,12 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
-import Fab from "@material-ui/core/Fab";
 import Chip from "@material-ui/core/Chip";
 import Typography from "@material-ui/core/Typography";
 import Drawer from "@material-ui/core/Drawer";
 import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import { makeStyles } from "@material-ui/core/styles";
 
 const drawerWidth = 300;
@@ -171,10 +171,26 @@ const ImageGroupPage = ({ ...props }) => {
 							style={{ display: "none" }}
 						/>
 						<label htmlFor="contained-button-file">
-							<Button component="span" variant="contained" color="primary">
+							<Button
+								size="small"
+								startIcon={<CloudUploadIcon />}
+								component="span"
+								variant="contained"
+								color="primary"
+							>
 								Upload
 							</Button>
 						</label>
+						<Button
+							size="small"
+							startIcon={<AddIcon />}
+							component="span"
+							variant="contained"
+							color="primary"
+							onClick={handleClickAddLabel}
+						>
+							Label
+						</Button>
 					</HeadLine>
 
 					<MediaGrid columns={4}>
@@ -207,9 +223,6 @@ const ImageGroupPage = ({ ...props }) => {
 				>
 					<div className={classes.labelHeader}>
 						<Typography variant="overline">Labels</Typography>
-						<Fab size="small" color="primary" onClick={handleClickAddLabel}>
-							<AddIcon />
-						</Fab>
 					</div>
 					<div>
 						{labels.map(label => {
