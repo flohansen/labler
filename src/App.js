@@ -12,6 +12,7 @@ import ImageGroupPage from "./_components/ImageGroupPage";
 import EditorPage from "./_components/EditorPage";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
+import Link from "@material-ui/core/Link";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -37,7 +38,8 @@ const useStyles = makeStyles(theme => ({
 
 	appTitle: {
 		color: theme.palette.text.primary,
-		flexGrow: 1
+		marginRight: "auto",
+		cursor: "pointer"
 	},
 
 	avatarName: {
@@ -78,9 +80,10 @@ function App() {
 						<IconButton edge="start" className={classes.menuButton}>
 							<MenuIcon />
 						</IconButton>
-						<Typography variant="h6" className={classes.appTitle}>
-							Labler
-						</Typography>
+
+						<Link underline="none" href="/app" className={classes.appTitle}>
+							<Typography variant="h6">Labler</Typography>
+						</Link>
 
 						<Typography variant="overline" className={classes.avatarName}>
 							{payload?.username}
