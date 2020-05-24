@@ -17,7 +17,7 @@ const AuthProvider = ({ ...props }) => {
 	const [payload, setPayload] = useState();
 
 	useEffect(() => {
-		if (token !== "null") {
+		if (token && token !== "null") {
 			const parts = token.split(".");
 
 			if (parts.length === 3) {
