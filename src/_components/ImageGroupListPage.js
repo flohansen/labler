@@ -113,7 +113,7 @@ const ImageGroupListPage = () => {
 							onClick={handleGroupClick}
 							key={idx}
 							title={item.name}
-							subtitle={category.name}
+							subtitle={category?.name}
 							imageGroupId={item.id}
 						/>
 					);
