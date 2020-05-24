@@ -389,7 +389,7 @@ const EditorPage = ({ ...props }) => {
 					setImage(img);
 				};
 
-				img.src = `http://localhost:5000/${response.image.filename}`;
+				img.src = `https://volbyte.com:5000/${response.image.filename}`;
 			}
 		})();
 

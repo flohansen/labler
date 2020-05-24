@@ -189,7 +189,7 @@ const ImageGroupPage = ({ ...props }) => {
 									checked={img.labelings > 0}
 									onClick={handleClick}
 									key={idx}
-									src={`http://localhost:5000/${img.filename}`}
+									src={`https://volbyte.com:5000/${img.filename}`}
 									subtitle={img.name}
 									alt=""
 								/>
