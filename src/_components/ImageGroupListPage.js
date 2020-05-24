@@ -87,7 +87,7 @@ const ImageGroupListPage = () => {
 
 					const handleDownload = async () => {
 						const request = await fetch(
-							`http://localhost:5000/endpoint/imageGroups/${item.id}/export`,
+							`https://volbyte.com:5000/endpoint/imageGroups/${item.id}/export`,
 							{
 								method: "GET",
 								headers: {
@@ -107,7 +107,7 @@ const ImageGroupListPage = () => {
 							onDownload={handleDownload}
 							src={
 								item.thumbnail
-									? `http://localhost:5000/${item.thumbnail}`
+									? `https://volbyte.com:5000/${item.thumbnail}`
 									: null
 							}
 							onClick={handleGroupClick}
