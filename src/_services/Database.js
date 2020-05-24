@@ -1,4 +1,4 @@
-const hostname = "https://217.160.60.183:5000";
+const hostname = "https://volbyte.com:5000";
 
 export default class Database {
 	static async auth(username, password) {
