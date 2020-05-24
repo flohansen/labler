@@ -75,7 +75,7 @@ const ImageGroupListPage = () => {
 
 	return (
 		<>
-			<HeadLine title="Image groups">
+			<HeadLine title="Your image groups">
 				<Button
 					variant="contained"
 					color="primary"
