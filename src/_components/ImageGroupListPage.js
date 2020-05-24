@@ -20,8 +20,16 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles(theme => ({
+	inputCategory: {
+		marginTop: theme.spacing(3)
+	}
+}));
 
 const ImageGroupListPage = () => {
+	const classes = useStyles();
 	const [categories] = useContext(CategoryContext);
 	const {
 		token: [token]
@@ -133,7 +141,7 @@ const ImageGroupListPage = () => {
 						margin="dense"
 						autoFocus
 					/>
-					<FormControl fullWidth>
+					<FormControl className={classes.inputCategory} fullWidth>
 						<InputLabel id="new-group-category-label">Category</InputLabel>
 						<Select
 							labelId="new-group-category-label"
