@@ -52,7 +52,8 @@ const useStyles = makeStyles(theme => ({
 	},
 
 	chip: {
-		margin: 5
+		margin: 5,
+		color: theme.palette.primary.contrastText
 	},
 
 	input: {
