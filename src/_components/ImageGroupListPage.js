@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
+import { useSnackbar } from "notistack";
 
 import AuthContext from "../_contexts/AuthContext";
 import CategoryContext from "../_contexts/CategoryContext";
@@ -8,6 +9,7 @@ import Database from "../_services/Database";
 import MediaGrid from "./MediaGrid";
 import HeadLine from "./HeadLine";
 import ImageGroupCard from "./ImageGroupCard";
+import ConfirmDialog from "./ConfirmDialog";
 
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
@@ -31,15 +33,53 @@ const useStyles = makeStyles(theme => ({
 
 const ImageGroupListPage = () => {
 	const classes = useStyles();
+
+	const { enqueueSnackbar } = useSnackbar();
+
 	const [categories] = useContext(CategoryContext);
 	const {
 		token: [token]
 	} = useContext(AuthContext);
 	const [imageGroups, updateImageGroups] = useContext(ImageGroupContext);
 	const [addGroupOpen, setAddGroupOpen] = useState(false);
+
+	const [confirmDialogValue, setConfirmDialogValue] = useState();
+	const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
 	const [newGroupName, setNewGroupName] = useState("");
 	const [newGroupType, setNewGroupType] = useState("");
 	const history = useHistory();
+
+	const handleDeleteImageGroup = async () => {
+		const response = await Database.deleteImageGroup(token, confirmDialogValue);
+
+		if (response.success) {
+			updateImageGroups();
+			enqueueSnackbar("Deleted image group", { variant: "success" });
+		} else {
+			enqueueSnackbar("Could not delete image group", {
+				variant: "error"
+			});
+		}
+	};
+
+	const handleOpenConfirmDialog = value => {
+		setConfirmDialogValue(value);
+		setConfirmDialogOpen(true);
+	};
+
+	const handleCloseConfirmDialog = () => {
+		setConfirmDialogValue();
+		setConfirmDialogOpen(false);
+	};
+
+	const handleConfirmDialogYes = () => {
+		handleDeleteImageGroup();
+		handleCloseConfirmDialog();
+	};
+
+	const handleConfirmDialogNo = () => {
+		handleCloseConfirmDialog();
+	};
 
 	const handleAddGroupClose = () => {
 		setAddGroupOpen(false);
@@ -114,8 +154,8 @@ const ImageGroupListPage = () => {
 
 					return (
 						<ImageGroupCard
-							downloadable
 							onDownload={handleDownload}
+							onDelete={() => handleOpenConfirmDialog(item.id)}
 							src={
 								item.thumbnail
 									? `https://volbyte.com:5000/${item.thumbnail}`
@@ -168,6 +208,14 @@ const ImageGroupListPage = () => {
 					</Button>
 				</DialogActions>
 			</Dialog>
+
+			<ConfirmDialog
+				open={confirmDialogOpen}
+				onClose={handleCloseConfirmDialog}
+				onYes={handleConfirmDialogYes}
+				onNo={handleConfirmDialogNo}
+				title="Do you really want to delete it?"
+			></ConfirmDialog>
 		</>
 	);
 };

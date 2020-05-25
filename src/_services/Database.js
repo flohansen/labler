@@ -197,4 +197,18 @@ export default class Database {
 
 		return await request.json();
 	}
+
+	static async deleteImageGroup(token, imageGroupId) {
+		const request = await fetch(
+			`${hostname}/endpoint/imageGroups/${imageGroupId}`,
+			{
+				method: "DELETE",
+				headers: {
+					Authorization: `Bearer ${token}`
+				}
+			}
+		);
+
+		return await request.json();
+	}
 }

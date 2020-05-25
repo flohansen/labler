@@ -1,14 +1,15 @@
 import React from "react";
 
 import Tooltip from "@material-ui/core/Tooltip";
-import Fab from "@material-ui/core/Fab";
+import IconButton from "@material-ui/core/IconButton";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
-import CardContent from "@material-ui/core/CardContent";
+import CardActions from "@material-ui/core/CardActions";
 import ImageIcon from "@material-ui/icons/Image";
 import GetAppIcon from "@material-ui/icons/GetApp";
+import DeleteIcon from "@material-ui/icons/Delete";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
@@ -33,17 +34,12 @@ const useStyles = makeStyles(theme => ({
 		fill: "#aaa",
 		top: "50%",
 		transform: "translateY(-50%)"
-	},
-
-	downloadAvatar: {
-		background: "#222",
-		color: "#fff"
 	}
 }));
 
 const ImageGroupCard = ({
-	downloadable,
-	onDownload = () => {},
+	onDownload,
+	onDelete,
 	src,
 	title,
 	subtitle,
@@ -52,11 +48,6 @@ const ImageGroupCard = ({
 	...props
 }) => {
 	const classes = useStyles();
-
-	const handleClickDownload = event => {
-		event.stopPropagation();
-		onDownload();
-	};
 
 	return (
 		<div {...props}>
@@ -77,19 +68,23 @@ const ImageGroupCard = ({
 					)}
 				</CardActionArea>
 
-				{downloadable ? (
-					<CardContent>
+				<CardActions>
+					{typeof onDownload === "function" ? (
 						<Tooltip title="Export">
-							<Fab
-								size="small"
-								onClick={handleClickDownload}
-								className={classes.downloadAvatar}
-							>
+							<IconButton onClick={onDownload}>
 								<GetAppIcon />
-							</Fab>
+							</IconButton>
 						</Tooltip>
-					</CardContent>
-				) : null}
+					) : null}
+
+					{typeof onDelete === "function" ? (
+						<Tooltip title="Delete">
+							<IconButton onClick={onDelete}>
+								<DeleteIcon />
+							</IconButton>
+						</Tooltip>
+					) : null}
+				</CardActions>
 			</Card>
 		</div>
 	);
